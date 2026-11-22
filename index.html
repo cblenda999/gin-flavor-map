@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gin Flavor Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Nunito:wght@500;600;700;800;900&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* VOICE: playful, cyber Y2K gadget catalog
+   IDEA: the map is an iMac G3 in Bondi blue; the cards are clear-plastic gadgets; "order it as" is a Nokia/Pokémon-mini LCD
+   PICTURE: zoomable flavor map on a CRT screen inside a translucent aqua shell, dots in iMac flavors
+   COLOUR and TYPE: sky blue ground, Bondi aqua + lime lead, strawberry and grape accents, frosted plastic, chrome title; Audiowide + Nunito + VT323
+   LAYOUT: search first; on phones the answer card comes before the map */
+:root{color-scheme:light dark;
+ --bg1:light-dark(#bfeaff,#140a33);--bg2:light-dark(#e9f8ff,#22105a);
+ --ink:light-dark(#06304a,#eaf6ff);--muted:light-dark(#2f6079,#b9cde8);
+ --bondi:#00a3c4;--bondi-d:#007a96;--aqua:#7fe3ff;--lime:#9be41c;--lime-d:#4f9a00;--straw:#ff3d8b;--grape:#8f5bff;--tang:#ff8c1a;
+ --frost:light-dark(rgba(255,255,255,.62),rgba(255,255,255,.10));--frost2:light-dark(rgba(255,255,255,.28),rgba(255,255,255,.04));
+ --rim:light-dark(rgba(255,255,255,.95),rgba(255,255,255,.35));
+ --t-blue:light-dark(rgba(0,163,196,.30),rgba(0,163,196,.38));--t-lime:light-dark(rgba(139,224,0,.32),rgba(139,224,0,.26));
+ --t-pink:light-dark(rgba(255,61,139,.26),rgba(255,61,139,.30));--t-grape:light-dark(rgba(143,91,255,.26),rgba(143,91,255,.34));
+ --shadow:light-dark(rgba(0,90,130,.38),rgba(0,0,0,.6));--chip:light-dark(rgba(255,255,255,.75),rgba(255,255,255,.12));
+ --g1:#b9f1ff;--g2:#3cc8e6;--g3:#00a3c4;--g4:#0094b5;--gb:#007a96;--gt:#fff;--gts:0 1px 1px rgba(0,60,90,.5);
+ --k1:#f2ffd0;--k2:#c4f25a;--k3:#9be41c;--k4:#86cf0a;--kb:#5ea300;--kt:#163a00;--kts:0 1px 0 rgba(255,255,255,.6);
+ --s1:rgba(185,241,255,.85);--s2:rgba(0,163,196,.55);--s3:rgba(0,122,150,.78);--shink:#06496b;
+ --sky1:light-dark(#8fd6ff,#081640);--sky2:light-dark(#e6f8ff,#1b0f4d)}
+:root[data-skin=green]{--g1:#f2ffd0;--g2:#c4f25a;--g3:#9be41c;--g4:#86cf0a;--gb:#5ea300;--gt:#163a00;--gts:0 1px 0 rgba(255,255,255,.6);
+ --k1:#b9f1ff;--k2:#3cc8e6;--k3:#00a3c4;--k4:#0094b5;--kb:#007a96;--kt:#fff;--kts:0 1px 1px rgba(0,60,90,.5);
+ --s1:rgba(240,255,170,.88);--s2:rgba(170,240,20,.6);--s3:rgba(100,175,0,.82);--shink:#2b5200;
+ --sky1:light-dark(#b8f5a8,#0b2a12);--sky2:light-dark(#f2fff0,#123b1c);--t-blue:light-dark(rgba(139,224,0,.30),rgba(139,224,0,.26))}
+:root[data-skin=pink]{--g1:#ffd6e8;--g2:#ff8cc0;--g3:#ff5ca5;--g4:#e83e8c;--gb:#c4005a;--gt:#fff;--gts:0 1px 1px rgba(120,0,60,.5);
+ --k1:#efe3ff;--k2:#c6a8ff;--k3:#a57bff;--k4:#8f5bff;--kb:#6b3fd6;--kt:#fff;--kts:0 1px 1px rgba(60,20,120,.5);
+ --s1:rgba(255,220,240,.88);--s2:rgba(255,120,185,.55);--s3:rgba(200,60,150,.78);--shink:#7a0b45;
+ --sky1:light-dark(#e9c6ff,#2a0b3f);--sky2:light-dark(#ffeaf6,#3d0f45);--t-blue:light-dark(rgba(255,61,139,.22),rgba(255,61,139,.30))}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;color:var(--ink);font:16px/1.5 Nunito,"Trebuchet MS",system-ui,sans-serif;overflow-x:clip;min-height:100vh}
+html{min-height:100%;background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 70%) fixed;background-color:var(--sky2)}
+html,body{overflow-x:clip;overscroll-behavior-x:none;max-width:100%}
+@supports not (overflow:clip){html,body{overflow-x:hidden}}
+body{touch-action:pan-y pinch-zoom}
+.band{padding:clamp(16px,3vw,36px) max(4vw,12px)}
+.wrap{max-width:1320px;margin:0 auto}
+h1{font:400 clamp(30px,6vw,58px)/1.1 Audiowide,"Arial Black",sans-serif;margin:0 0 10px;text-align:center;text-wrap:balance;letter-spacing:.5px;color:light-dark(#06304a,#ffffff);text-shadow:3px 3px 0 light-dark(#7fe3ff,#8f5bff)}
+.lcdbar{display:inline-block;font:22px/1 VT323,monospace;letter-spacing:1px;color:#20301a;background:#c5d6a3;padding:7px 14px 6px;border-radius:10px;
+ border:3px solid rgba(255,255,255,.85);box-shadow:inset 0 2px 6px rgba(0,0,0,.28),0 4px 12px -4px var(--shadow);margin:0 0 10px;max-width:100%}
+@media(max-width:600px){.lcdbar{font-size:17px;padding:6px 10px 5px}}
+.lcdbar span{animation:blink 1.2s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.lcdbar span{animation:none}}
+.lede{margin:0 0 14px;color:var(--muted);max-width:68ch;font-weight:600}
+.search{display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:relative}
+.qwrap{position:relative;flex:1 1 260px;display:flex}
+.qwrap input{padding-right:56px!important}
+.search input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;display:none}
+.qclr{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:38px;height:38px;min-height:38px;padding:0;border-radius:50%;font:900 24px/1 Nunito,sans-serif;display:grid;place-items:center}
+.qclr[hidden]{display:none}
+.qclr:active{transform:translateY(-50%) scale(.94)}
+.search input{flex:1 1 auto;width:100%;font:700 18px Nunito,sans-serif;padding:10px 20px;min-height:54px;border:2px solid var(--gb);border-radius:999px;
+ background:linear-gradient(180deg,light-dark(#e9fbff,#0e2a4a),light-dark(#ffffff,#16365c));color:var(--ink);box-shadow:inset 0 3px 6px rgba(0,60,90,.22),0 1px 0 var(--rim)}
+.search input:focus{outline:3px solid var(--straw);outline-offset:2px}
+button{font:800 15px Nunito,sans-serif;min-height:44px;padding:0 20px;border-radius:999px;cursor:pointer;color:var(--gt);text-shadow:var(--gts);
+ border:1px solid var(--gb);background:linear-gradient(180deg,var(--g1) 0%,var(--g2) 45%,var(--g3) 55%,var(--g4) 100%);
+ box-shadow:inset 0 2px 0 rgba(255,255,255,.8),inset 0 -3px 6px rgba(0,60,90,.2),0 3px 8px -2px var(--shadow);transition:transform .08s}
+button:active{transform:translateY(1px)}
+button.ghost{color:var(--kt);text-shadow:var(--kts);border-color:var(--kb);background:linear-gradient(180deg,var(--k1) 0%,var(--k2) 45%,var(--k3) 55%,var(--k4) 100%)}
+button:focus-visible{outline:3px solid var(--straw);outline-offset:2px}
+.sugg{position:absolute;top:60px;left:0;right:0;max-width:640px;background:light-dark(rgba(240,251,255,.97),rgba(20,30,70,.97));border:2px solid var(--bondi);border-radius:20px;z-index:9;max-height:340px;overflow:auto;display:none;padding:6px;box-shadow:0 14px 30px -10px var(--shadow)}
+.sugg.on{display:block}
+.sugg div{padding:11px 14px;border-radius:14px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;font-weight:700}
+.sugg div small{color:var(--muted);text-align:right;font-weight:600}
+.sugg div.act,.sugg div:hover{background:linear-gradient(90deg,rgba(0,163,196,.18),rgba(139,224,0,.18))}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chips>span{font-size:13px;font-weight:800;color:var(--muted);margin-right:2px}
+.chip{font:800 14px Nunito,sans-serif;min-height:38px;padding:0 14px;border-radius:999px;border:1.5px solid var(--rim);background:var(--chip);color:var(--ink);text-shadow:none;box-shadow:inset 0 1px 0 #fff,0 2px 6px -3px var(--shadow)}
+.chip[aria-pressed=true]{color:var(--gt);text-shadow:var(--gts);border-color:var(--gb);background:linear-gradient(180deg,var(--g1),var(--g3) 55%,var(--g4))}
+.chip .sw{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px;border:1.5px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:22px;align-items:start;margin-top:18px}
+.leftcol{display:grid;gap:18px;align-content:start}
+.side{display:grid;gap:16px;position:sticky;top:10px;max-height:calc(100vh - 20px);overflow:auto;padding:4px 4px 8px}
+@media(max-width:1050px){.layout{grid-template-columns:minmax(0,1fr)}.side{order:-1;position:static;max-height:none;overflow:visible;padding:0}}
+/* iMac G3 shell */
+.poster{position:relative;border-radius:40px;padding:clamp(12px,2.2vw,26px) clamp(10px,2.2vw,26px) 18px;color:#06304a;
+ background:linear-gradient(160deg,var(--s1),var(--s2) 45%,var(--s3));border:2px solid rgba(255,255,255,.9);
+ box-shadow:inset 0 2px 0 #fff,inset 0 -14px 30px rgba(0,60,90,.25),0 22px 40px -18px var(--shadow)}
+.poster::before{content:"";position:absolute;left:6%;right:6%;top:6px;height:60px;border-radius:40px;background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0));pointer-events:none}
+.poster h2{position:relative;font:400 clamp(22px,3.6vw,40px)/1 Audiowide,sans-serif;text-align:center;margin:2px 0 4px;color:#fff;-webkit-text-stroke:1px var(--shink);text-shadow:0 3px 0 var(--shink),0 6px 14px rgba(0,60,90,.45)}
+.poster p.sub{position:relative;text-align:center;margin:0 0 8px;font-weight:900;color:var(--shink);font-size:14px}
+.screen{position:relative;border-radius:24px;padding:10px;background:linear-gradient(180deg,#f7fcfe,#d8eef5);box-shadow:inset 0 2px 0 #fff,inset 0 -3px 6px rgba(0,60,90,.15),0 2px 0 rgba(255,255,255,.6)}
+.mapwrap{position:relative;aspect-ratio:1/1;padding:30px;border-radius:18px;overflow:hidden;
+ background:radial-gradient(120% 90% at 50% 40%,#ffffff 0%,#e4f8ff 55%,#bfe9f7 100%);box-shadow:inset 0 0 0 2px rgba(0,122,150,.35),inset 0 6px 24px rgba(0,60,90,.25)}
+.mapwrap::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:18px;background:repeating-linear-gradient(180deg,rgba(0,80,120,.035) 0 1px,transparent 1px 3px),linear-gradient(160deg,rgba(255,255,255,.45),transparent 35%)}
+@media(max-width:600px){.mapwrap{aspect-ratio:4/5;padding:22px 20px}.poster{padding:12px 8px 14px;border-radius:30px}.screen{padding:6px;border-radius:20px}}
+#map{position:absolute;inset:30px;width:calc(100% - 60px);height:calc(100% - 60px);touch-action:none;cursor:grab;display:block}
+@media(max-width:600px){#map{inset:22px 20px;width:calc(100% - 40px);height:calc(100% - 44px)}}
+#map:active{cursor:grabbing}
+.ax{position:absolute;z-index:1;font:400 clamp(11px,1.6vw,17px)/1 Audiowide,sans-serif;color:#06496b;letter-spacing:.5px;white-space:nowrap;pointer-events:none}
+.ax.t{top:8px;left:50%;transform:translateX(-50%)}.ax.b{bottom:8px;left:50%;transform:translateX(-50%)}
+.ax.l{left:4px;top:50%;transform:translate(-50%,-50%) rotate(-90deg);margin-left:12px}
+.ax.r{right:4px;top:50%;transform:translate(50%,-50%) rotate(90deg);margin-right:12px}
+.chips.cen{justify-content:center;margin:0 0 10px;position:relative}
+.zoom{display:flex;justify-content:center;gap:8px;margin:12px 0 2px;flex-wrap:wrap}
+.zoom button{min-height:44px;min-width:48px;padding:0 16px;font-size:16px;line-height:1}
+.zoom #zin,.zoom #zout{font-size:20px;padding:0;width:48px}
+#map .lbl{cursor:pointer}
+#map .lbl rect{fill:#fff}
+#map .lbl text{fill:#06304a;font-family:Nunito,sans-serif;font-weight:900}
+#map .k0 .dot,#map .k0 rect{stroke:#00a3c4}#map .k0 .dot{fill:#00a3c4}
+#map .k1 .dot,#map .k1 rect{stroke:#4f9a00}#map .k1 .dot{fill:#8bd400}
+#map .k2 .dot,#map .k2 rect{stroke:#e07200}#map .k2 .dot{fill:#ff8c1a}
+#map .k3 .dot,#map .k3 rect{stroke:#7a45f0}#map .k3 .dot{fill:#a57bff}
+#map .dot{stroke:#fff !important}
+#map .g.dim{opacity:.32}
+#map .g.sel .dot{fill:#ff3d8b}
+#map .g.sel rect{fill:#ff3d8b;stroke:#c4005a}#map .g.sel text{fill:#fff}
+#map .g.sim rect{fill:#f2ffd6}
+#map .g.liked .dot{stroke:#ff3d8b !important}
+#map .g.nope .dot{stroke:#555 !important}
+#map .ldr{stroke:#3c8fb0}
+.hint{text-align:center;font-size:13px;color:#fff;font-weight:800;margin:4px 0 0;text-shadow:0 1px 2px var(--shink),0 0 6px var(--shink)}
+.foot{position:relative;margin:12px auto 2px;max-width:760px;padding:10px 16px;text-align:center;font-size:13.5px;font-weight:600;color:#06304a;background:rgba(255,255,255,.7);border-radius:16px;box-shadow:inset 0 1px 0 #fff}
+/* clear plastic cards */
+.card{position:relative;border-radius:26px;padding:20px;border:2px solid var(--rim);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+ background:linear-gradient(160deg,var(--frost),var(--frost2));box-shadow:inset 0 2px 0 var(--rim),inset 0 -10px 24px rgba(0,60,90,.10),0 14px 30px -14px var(--shadow)}
+.card::before{content:"";position:absolute;left:12px;right:12px;top:6px;height:46px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.65),rgba(255,255,255,0));pointer-events:none}
+.card>*{position:relative}
+#detailcard{background:linear-gradient(160deg,var(--frost),var(--t-blue))}
+.card.match{background:linear-gradient(160deg,var(--frost),var(--t-lime))}
+.card.fy{background:linear-gradient(160deg,var(--frost),var(--t-pink));border-color:light-dark(rgba(255,255,255,.95),rgba(255,61,139,.6));box-shadow:inset 0 2px 0 var(--rim),0 0 0 3px rgba(217,195,255,.45),0 14px 30px -14px var(--shadow)}
+#mycard{background:linear-gradient(160deg,var(--frost),var(--t-grape))}
+.card h3{font:400 28px/1.1 Audiowide,sans-serif;margin:0 0 8px;color:var(--ink)}
+.card h4{margin:0 0 10px;font:400 18px/1.2 Audiowide,sans-serif;letter-spacing:.3px}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.meta span{font-size:13px;font-weight:800;padding:3px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--rim);white-space:nowrap}
+/* your odds meter */
+.odds{border-radius:16px;padding:10px 14px 12px;margin:0 0 12px;background:rgba(255,255,255,.45);border:1.5px solid var(--rim);box-shadow:inset 0 1px 0 #fff}
+.odds .top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.odds .lab{font:400 14px Audiowide,sans-serif}
+.odds .big{font:38px/1 VT323,monospace;white-space:nowrap}
+.odds .verdict{font-weight:900;font-size:15px}
+.odds .meter{position:relative;height:14px;border-radius:999px;margin:6px 0 6px;background:linear-gradient(90deg,#ff5c7a,#ffb340 35%,#e8f04a 55%,#9be41c 80%,#2fcf6a);box-shadow:inset 0 2px 3px rgba(0,0,0,.25)}
+.odds .meter i{position:absolute;top:50%;width:22px;height:22px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,#fff 0 25%,#e9f6ff 45%,#9fb9c8);border:2px solid #06304a;box-shadow:0 2px 4px rgba(0,0,0,.3)}
+.odds small{display:block;color:var(--muted);font-weight:600;font-size:13px;line-height:1.4}
+/* LCD */
+.order{position:relative;color:#1d2c12;border-radius:16px;padding:12px 16px 12px;margin:0 0 12px;
+ background:repeating-linear-gradient(0deg,rgba(0,0,0,.035) 0 1px,transparent 1px 3px),linear-gradient(180deg,#d3e2b4,#b9cc93);
+ border:4px solid light-dark(#eaf6fa,#2a3b63);box-shadow:inset 0 3px 8px rgba(0,0,0,.3),0 0 0 2px rgba(0,122,150,.35)}
+.order b{display:block;font:20px/1 VT323,monospace;letter-spacing:1px;opacity:.75;text-transform:uppercase}
+.order .drink{font:40px/1 VT323,monospace;margin:2px 0}
+.order .more{font:21px/1.1 VT323,monospace}
+.backup{border:2px dashed var(--gb);border-radius:18px;padding:10px 12px;margin:0 0 12px;font-size:15px;background:rgba(255,255,255,.25)}
+.backup b{display:block;font-size:13px;color:var(--muted);font-weight:800}
+.backup button{min-height:36px;padding:0 12px;margin:6px 6px 0 0;font-size:14px}
+.rate{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.rate button{flex:1 1 30%;padding:0 8px;white-space:nowrap;color:var(--ink);text-shadow:none;border:1.5px solid var(--rim);background:var(--chip);box-shadow:inset 0 1px 0 #fff,0 2px 6px -3px var(--shadow)}
+.rate button[aria-pressed=true].love{color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.3);border-color:#c4005a;background:linear-gradient(180deg,#ffc2dc,#ff5c9e 50%,#ff3d8b 55%,#e8297a)}
+.rate button[aria-pressed=true].up{color:#163a00;border-color:#5ea300;background:linear-gradient(180deg,#f2ffd0,#c4f25a 45%,#9be41c 55%,#86cf0a)}
+.rate button[aria-pressed=true].down{color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.3);border-color:#5d6a77;background:linear-gradient(180deg,#e9eef2,#a8b4bf 50%,#8d9aa6 55%,#7b8894)}
+.rate button.clr{flex:0 0 auto}
+.notes{margin:0 0 10px;font-weight:600}
+.bot{font-size:14px;color:var(--muted);margin:0 0 12px}
+.bot strong{color:var(--ink)}
+details.prof summary{cursor:pointer;font-weight:900;min-height:32px}
+.bars{display:grid;gap:7px;margin-top:8px}
+.bar{display:grid;grid-template-columns:118px minmax(0,1fr) 18px;align-items:center;gap:8px;font-size:14px;font-weight:700}
+.bar i{display:block;height:14px;border-radius:999px;background:rgba(255,255,255,.55);overflow:hidden;box-shadow:inset 0 2px 3px rgba(0,60,90,.25)}
+.bar i b{display:block;height:100%;border-radius:999px;background:repeating-linear-gradient(90deg,transparent 0 9px,rgba(255,255,255,.6) 9px 11px),linear-gradient(180deg,#c8f7ff,#00c3e6 50%,#00a3c4)}
+.bar em{font-style:normal;text-align:right;color:var(--muted);font-weight:800}
+.simlist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.simlist li button{width:100%;text-align:left;color:var(--ink);text-shadow:none;border:1.5px solid var(--rim);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:10px 14px;min-height:auto;border-radius:18px;
+ background:var(--chip);box-shadow:inset 0 1px 0 #fff,0 3px 8px -5px var(--shadow)}
+.simlist li button:hover{border-color:var(--bondi);box-shadow:inset 0 1px 0 #fff,0 0 0 3px rgba(0,163,196,.25)}
+.simlist strong{font-size:16px;font-weight:900}
+.simlist .pct{font:22px/1 VT323,monospace;color:light-dark(#006f88,#7fe3ff);white-space:nowrap}
+.simlist small{grid-column:1/-1;color:var(--muted);font-weight:600;font-size:13.5px;line-height:1.4}
+.empty{color:var(--muted);margin:0;font-weight:600}
+.mine{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.mine button{min-height:34px;padding:0 12px;font-size:14px;color:var(--ink);text-shadow:none;border:1.5px solid var(--rim);background:var(--chip);box-shadow:none}
+.mine button.love{border:2px solid var(--straw)}.mine button.up{border:2px solid var(--lime-d)}.mine button.down{opacity:.7}
+.sync{font-size:12.5px;color:var(--muted);margin:8px 0 0;font-weight:600}
+.jump{margin:12px 0 0;font-size:15px}.jump a{color:var(--ink);font-weight:900;text-decoration-color:var(--straw);text-decoration-thickness:3px;text-underline-offset:4px;display:inline-block;min-height:32px;padding-top:4px}
+/* Frutiger Aero layer */
+.aero{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;overflow:hidden;contain:strict}
+.cloud{position:absolute;border-radius:50%;background:radial-gradient(closest-side,light-dark(rgba(255,255,255,.95),rgba(170,190,255,.16)),light-dark(rgba(255,255,255,.6),rgba(170,190,255,.08)) 60%,transparent);filter:blur(6px)}
+.bub{position:absolute;border-radius:50%;border:1.5px solid light-dark(rgba(255,255,255,.85),rgba(255,255,255,.35));
+ background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.95) 0 9%,rgba(255,255,255,.25) 22%,rgba(160,230,255,.10) 55%,rgba(255,255,255,.35) 78%,transparent 80%);
+ animation:float 14s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-26px)}}
+.grass{position:absolute;left:0;right:0;bottom:0;width:100%;height:120px;opacity:.95}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .grass{opacity:.45}}
+:root[data-theme=dark] .grass{opacity:.45}
+@media(max-width:600px){.grass{height:70px}}
+/* holographic foil */
+.holo{background:linear-gradient(115deg,#ffc6ea 0%,#d9c3ff 18%,#a9eeff 36%,#c9ffd1 52%,#fff1b8 66%,#ffc6ea 82%,#d9c3ff 100%);background-size:300% 300%;animation:holo 9s ease-in-out infinite}
+@keyframes holo{50%{background-position:100% 50%}}
+.rate button[aria-pressed=true].love{color:#5b0a3a;text-shadow:0 1px 0 rgba(255,255,255,.6);border-color:#e05aa0;background:linear-gradient(115deg,#ffc6ea,#d9c3ff 25%,#a9eeff 50%,#ffc6ea 75%,#d9c3ff);background-size:300% 300%;animation:holo 6s ease-in-out infinite;box-shadow:inset 0 2px 0 #fff,0 0 0 2px rgba(255,61,139,.25),0 3px 8px -2px var(--shadow)}
+/* app windows */
+.winbar{display:flex;align-items:center;gap:10px;margin:-20px -20px 14px;padding:9px 10px 9px 16px;border-radius:24px 24px 0 0;border-bottom:1.5px solid rgba(255,255,255,.85);
+ box-shadow:inset 0 2px 0 rgba(255,255,255,.75),inset 0 -6px 10px rgba(0,0,0,.08)}
+.winbar h4{margin:0;flex:1;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.45);font-size:16px}
+.winbar .wb{display:flex;gap:5px;flex:none}
+.winbar .wb i{width:20px;height:20px;border-radius:6px;display:grid;place-items:center;font:900 12px/1 Nunito,sans-serif;font-style:normal;color:#fff;
+ background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.35) 50%,rgba(255,255,255,.15));border:1px solid rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.2);text-shadow:0 1px 1px rgba(0,0,0,.4)}
+.winbar .wb i.x{background:linear-gradient(180deg,#ffb3c9,#ff3d6e 55%,#e0244f);border-color:#fff}
+.wb-blue{background:linear-gradient(180deg,#9fe9ff,#26b9db 50%,#0096b8 52%,#33c2e3)}
+.wb-lime{background:linear-gradient(180deg,#eaffb0,#a6e82a 50%,#86cf0a 52%,#b2ef3a)}.wb-lime h4{color:#183d00;text-shadow:0 1px 0 rgba(255,255,255,.7)}
+.wb-grape{background:linear-gradient(180deg,#e2d2ff,#a57bff 50%,#8f5bff 52%,#b08cff)}
+.winbar.holo h4{color:#4a1a6b;text-shadow:0 1px 0 rgba(255,255,255,.8)}
+:root[data-skin=green] .wb-blue{background:linear-gradient(180deg,#eaffb0,#a6e82a 50%,#86cf0a 52%,#b2ef3a)}:root[data-skin=green] .wb-blue h4{color:#183d00;text-shadow:0 1px 0 rgba(255,255,255,.7)}
+:root[data-skin=pink] .wb-blue{background:linear-gradient(180deg,#ffd6e8,#ff7ab4 50%,#ff5ca5 52%,#ff8cc0)}
+/* skins switch */
+.toprow{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:0 0 10px}
+.toprow .lcdbar{margin:0}
+.skins{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.skins>span{font:400 13px Audiowide,sans-serif;color:var(--muted)}
+.skins button{min-height:38px;padding:0 14px;font-size:14px}
+.skins button[data-skin=aqua]{color:#fff;text-shadow:0 1px 1px rgba(0,60,90,.5);border-color:#007a96;background:linear-gradient(180deg,#b9f1ff,#3cc8e6 45%,#00a3c4 55%,#0094b5)}
+.skins button[data-skin=green]{color:#163a00;text-shadow:0 1px 0 rgba(255,255,255,.6);border-color:#5ea300;background:linear-gradient(180deg,#f2ffd0,#c4f25a 45%,#9be41c 55%,#86cf0a)}
+.skins button[data-skin=pink]{color:#fff;text-shadow:0 1px 1px rgba(120,0,60,.5);border-color:#c4005a;background:linear-gradient(180deg,#ffd6e8,#ff8cc0 45%,#ff5ca5 55%,#e83e8c)}
+.skins button[aria-pressed=true]{box-shadow:inset 0 2px 0 rgba(255,255,255,.8),0 0 0 3px var(--ink)}
+/* sparkles */
+.ttl{position:relative;display:inline-block}
+.sp{position:absolute;width:22px;height:22px;animation:tw 2.6s ease-in-out infinite;pointer-events:none}
+.sp svg{width:100%;height:100%;display:block}
+@keyframes tw{0%,100%{transform:scale(.3) rotate(0);opacity:.15}50%{transform:scale(1) rotate(45deg);opacity:1}}
+#map .spk{transform-box:fill-box;transform-origin:center;animation:tw 2.4s ease-in-out infinite;pointer-events:none}
+/* chrome swirl */
+.swirl{display:block;width:min(560px,100%);height:auto;margin:2px auto 12px;filter:drop-shadow(0 2px 2px rgba(0,40,70,.25))}
+.swirl.sm{width:min(300px,70%);margin:26px auto 8px}
+@media(prefers-reduced-motion:reduce){.bub,.holo,.sp,#map .spk,.rate button.love{animation:none!important}}
+.how{font-size:14px;color:var(--muted);margin-top:24px;max-width:80ch;font-weight:600}
+.how h4{color:var(--ink);margin:0 0 4px;font:400 16px Audiowide,sans-serif}
+</style>
+</head>
+<body>
+<script>try{document.documentElement.dataset.skin=localStorage.getItem("gin-skin")||"aqua"}catch(e){document.documentElement.dataset.skin="aqua"}</script>
+<div class="aero" aria-hidden="true">
+  <i class="cloud" style="left:0;top:6%;width:42%;height:15vw"></i><i class="cloud" style="right:0;top:16%;width:38%;height:13vw"></i><i class="cloud" style="left:30%;top:46%;width:30vw;height:10vw;opacity:.7"></i><i class="cloud" style="right:10%;top:72%;width:34vw;height:11vw;opacity:.8"></i>
+  <i class="bub" style="left:6%;top:30%;width:70px;height:70px"></i><i class="bub" style="left:12%;top:62%;width:34px;height:34px;animation-delay:-4s"></i><i class="bub" style="right:5%;top:40%;width:90px;height:90px;animation-delay:-7s"></i><i class="bub" style="right:18%;top:8%;width:28px;height:28px;animation-delay:-2s"></i><i class="bub" style="left:48%;top:84%;width:46px;height:46px;animation-delay:-9s"></i><i class="bub" style="left:38%;top:14%;width:20px;height:20px;animation-delay:-5s"></i>
+  <svg class="grass" viewBox="0 0 1200 120" preserveAspectRatio="none"><defs><linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b6f03c"/><stop offset=".5" stop-color="#5cc218"/><stop offset="1" stop-color="#2f8f0a"/></linearGradient><linearGradient id="gr2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9ff8a" stop-opacity=".9"/><stop offset="1" stop-color="#7fd321" stop-opacity=".2"/></linearGradient></defs><path d="M0 70 C200 40 380 60 600 52 C820 44 1000 30 1200 56 V120 H0Z" fill="url(#gr)"/><path d="M0 70 C200 40 380 60 600 52 C820 44 1000 30 1200 56 L1200 66 C1000 42 820 56 600 62 C380 70 200 52 0 80Z" fill="url(#gr2)"/><g fill="#fff"><circle cx="140" cy="84" r="4"/><circle cx="420" cy="78" r="3"/><circle cx="760" cy="74" r="4"/><circle cx="980" cy="70" r="3"/><circle cx="1110" cy="82" r="4"/></g><g fill="#ffd400"><circle cx="140" cy="84" r="1.6"/><circle cx="420" cy="78" r="1.2"/><circle cx="760" cy="74" r="1.6"/><circle cx="980" cy="70" r="1.2"/><circle cx="1110" cy="82" r="1.6"/></g></svg>
+</div>
+<div class="band"><div class="wrap">
+  <h1><span class="ttl">The Big Gin Flavor Map<span class="sp" style="left:-8px;top:-16px"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="#fff" stroke="#7fe3ff" stroke-width=".9"/></svg></span><span class="sp" style="right:-6px;top:-12px;width:16px;height:16px;animation-delay:.9s"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="#fff" stroke="#ff9cc6" stroke-width=".9"/></svg></span><span class="sp" style="left:44%;bottom:-12px;width:14px;height:14px;animation-delay:1.7s"><svg viewBox="0 0 24 24"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z" fill="#fff" stroke="#9be41c" stroke-width=".9"/></svg></span></span></h1>
+  <svg class="swirl" viewBox="-210 -28 420 56" aria-hidden="true"><defs><linearGradient id="chra" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".42" stop-color="#d3dee6"/><stop offset=".52" stop-color="#5e7888"/><stop offset=".62" stop-color="#a9bccb"/><stop offset="1" stop-color="#f4f9fc"/></linearGradient></defs><g fill="url(#chra)" stroke="#2c4656" stroke-width="1.1" stroke-linejoin="round"><g id="halfa"><path d="M16 0C42 -16 72 10 110 -3C134 -11 152 -7 170 4C152 -1 136 4 118 12C80 28 44 9 16 0Z"/><path d="M104 -1C112 -19 128 -25 148 -24C134 -19 124 -12 118 2Z"/><path d="M60 4C64 16 74 22 88 24C76 25 64 20 56 10Z"/><path d="M170 4C182 -3 196 -3 206 4C194 3 184 8 178 15Z"/></g><use href="#halfa" transform="scale(-1,1)"/><path d="M0 -16C3 -6 6 -3 16 0C6 3 3 6 0 16C-3 6 -6 3 -16 0C-6 -3 -3 -6 0 -16Z"/></g></svg>
+  <div class="toprow"><div class="lcdbar" id="lcd" aria-live="polite">LOADING GINS<span>_</span></div>
+  <div class="skins" role="group" aria-label="Skin"><span>Skin</span><button type="button" data-skin="aqua" aria-pressed="false">Aqua</button><button type="button" data-skin="green" aria-pressed="false">Extreme green</button><button type="button" data-skin="pink" aria-pressed="false">Pink jelly</button></div></div>
+  <p class="lede">Type a gin you like. You get what to order with it, what to ask for if the bar doesn't have it, and the closest bottles by flavor.</p>
+  <form class="search" id="f" autocomplete="off">
+    <span class="qwrap"><input id="q" type="search" placeholder="Try Hendrick's, Tanqueray, Roku…" aria-label="Gin brand" aria-controls="sugg" enterkeyhint="search"><button type="button" id="qclr" class="qclr" aria-label="Clear search" hidden>×</button></span>
+    <button type="submit">Find</button>
+    <button type="button" class="ghost" id="rnd">Surprise me</button>
+    <div class="sugg" id="sugg" role="listbox"></div>
+  </form>
+  <p class="jump"><a href="#fycard" id="fyjump">Jump to gins you might like</a></p>
+
+  <div class="layout">
+    <div class="leftcol">
+    <div class="poster">
+      <h2>Gin Flavor Map</h2>
+      <p class="sub" id="count"></p>
+      <div class="chips cen" id="chips"></div>
+      <div class="screen"><div class="mapwrap" id="mapwrap">
+        <span class="ax t">SAVORY &amp; HERBAL</span><span class="ax b">FLORAL &amp; FRUITY</span><span class="ax l">LIGHT</span><span class="ax r">INTENSE</span>
+        <svg id="map" role="img" aria-label="Zoomable flavor map of gins, light to intense and floral to savory"></svg>
+      </div></div>
+      <div class="zoom"><button type="button" id="zin" aria-label="Zoom in">+</button><button type="button" id="zout" aria-label="Zoom out">−</button><button type="button" class="w" id="zfit">Whole map</button><button type="button" class="w" id="zsel">My pick</button></div>
+      <p class="hint">Drag to move. Pinch or use + and − to zoom. More names appear as you zoom in.</p>
+      <div class="foot">Placement reflects each brand's flagship bottling, built from an 8-part flavor score. Treat it as a tasting guide, not lab data. ABV is the common US bottling and can differ by market. Price: $ under about $25, $$ about $25–45, $$$ over $45.</div>
+    </div>
+      <div class="card fy" id="fycard"><div class="winbar holo"><h4 id="fycount">Gins you might like</h4><span class="wb" aria-hidden="true"><i>_</i><i>□</i><i class="x">×</i></span></div><p class="sync" style="margin:-4px 0 10px">Updates every time you rate a gin. Uses the price and Total Wine filters too.</p><div id="foryou"></div></div>
+    </div>
+    <aside class="side">
+      <div class="card" id="detailcard"><div class="winbar wb-blue"><h4>Gin info</h4><span class="wb" aria-hidden="true"><i>_</i><i>□</i><i class="x">×</i></span></div><div id="detail"><p class="empty">Search a gin to get started. You'll see what to order, bar backups and its flavor breakdown here. Or tap any dot on the map.</p></div></div>
+      <div class="card match"><div class="winbar wb-lime"><h4>Closest matches</h4><span class="wb" aria-hidden="true"><i>_</i><i>□</i><i class="x">×</i></span></div><div class="chips" id="price" style="margin:-2px 0 10px"></div><ul class="simlist" id="sims"><li class="empty">Matches show up here.</li></ul></div>
+      <div class="card" id="mycard"><div class="winbar wb-grape"><h4>My gins</h4><span class="wb" aria-hidden="true"><i>_</i><i>□</i><i class="x">×</i></span></div><div id="mine"></div><p class="sync" id="sync"></p></div>
+    </aside>
+  </div>
+
+  <svg class="swirl sm" viewBox="-210 -28 420 56" aria-hidden="true"><defs><linearGradient id="chrb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".42" stop-color="#d3dee6"/><stop offset=".52" stop-color="#5e7888"/><stop offset=".62" stop-color="#a9bccb"/><stop offset="1" stop-color="#f4f9fc"/></linearGradient></defs><g fill="url(#chrb)" stroke="#2c4656" stroke-width="1.1" stroke-linejoin="round"><g id="halfb"><path d="M16 0C42 -16 72 10 110 -3C134 -11 152 -7 170 4C152 -1 136 4 118 12C80 28 44 9 16 0Z"/><path d="M104 -1C112 -19 128 -25 148 -24C134 -19 124 -12 118 2Z"/><path d="M60 4C64 16 74 22 88 24C76 25 64 20 56 10Z"/><path d="M170 4C182 -3 196 -3 206 4C194 3 184 8 178 15Z"/></g><use href="#halfb" transform="scale(-1,1)"/><path d="M0 -16C3 -6 6 -3 16 0C6 3 3 6 0 16C-3 6 -6 3 -16 0C-6 -3 -3 -6 0 -16Z"/></g></svg>
+  <div class="how">
+    <h4>How it works</h4>
+    "Your odds" on each gin is a weighted average of your own ratings: gins with a close flavor score count the most, "Loved it" counts higher than "Liked it", and "Not for me" pulls the odds down. Confidence rises as you rate more gins near it.<br><br>
+    Each gin is scored 0 to 5 on eight flavors: juniper, citrus, floral, herbal, spice, earthy and woody, fruity and sweet, and savory or coastal. Matches are the gins with the closest scores, nudged by strength. Bar backups are the closest matches that most bars and liquor stores carry. "Gins you might like" ranks every gin you haven't rated: near the ones you loved (counted about double) or liked, and away from the ones marked "Not for me." Total Wine prices were checked on totalwine.com in November 2026 and vary by store.
+  </div>
+</div></div>
+
+<script>
+{
+const DIMS=["Juniper","Citrus","Floral","Herbal","Spice","Earthy & woody","Fruity & sweet","Savory & coastal"];
+// [name, country, style, abv, price, scores JCFHSERV (0-5), signature botanicals, tasting notes, widely stocked 1/0]
+const RAW=[
+["Gordon's","England","London Dry",40,"$","42011100","Juniper, coriander, angelica, orris, licorice, orange and lemon peel","Crisp and piney with a dry finish. The no-fuss G&T workhorse.",1],
+["Gordon's Pink","England","Flavored",37.5,"$","11000050","Raspberry, strawberry, redcurrant, juniper","Candied red berries. Built for spritzes and lemonade.",1],
+["Gordon's Sicilian Lemon","England","Flavored",37.5,"$","25000020","Sicilian lemon, juniper","Sunny lemon peel, light and easy.",0],
+["Beefeater","England","London Dry",44,"$","43011100","Juniper, Seville orange, lemon peel, coriander, angelica, almond, orris","Bright pine and bitter orange. A bartender's go-to for martinis and Negronis.",1],
+["Beefeater 24","England","London Dry",45,"$$","33113100","Japanese sencha, Chinese green tea, grapefruit, Seville orange","Classic Beefeater softened with green tea and grapefruit. Elegant and dry.",0],
+["Beefeater Pink Strawberry","England","Flavored",37.5,"$","11000050","Strawberry, juniper, citrus","Sweet strawberry up front with a light juniper backbone.",1],
+["Beefeater Blood Orange","England","Flavored",37.5,"$","24000030","Blood orange, juniper","Juicy orange with a bitter edge.",0],
+["Beefeater Burrough's Reserve","England","Aged",43,"$$$","31002330","Beefeater recipe rested in Lillet barrels","Soft oak, vanilla and orange. Made for sipping.",0],
+["Tanqueray London Dry","England","London Dry",47.3,"$$","51012200","Juniper, coriander, angelica, licorice","Bold juniper, peppery coriander, bone-dry. The benchmark juniper-forward gin.",1],
+["Tanqueray No. Ten","England","London Dry",47.3,"$$$","35111110","Fresh grapefruit, lime, orange, chamomile, juniper","Fresh whole citrus and soft chamomile. Silky and bright.",1],
+["Tanqueray Rangpur","England","Flavored",41.3,"$$","25001020","Rangpur lime, ginger, bay leaf, juniper","Zesty lime and a little ginger warmth. Great with soda.",1],
+["Tanqueray Sevilla Orange","England","Flavored",41.3,"$$","25100030","Seville orange, orange blossom, juniper","Juicy bittersweet orange. Like marmalade in a glass.",0],
+["Tanqueray Blackcurrant Royale","England","Flavored",41.3,"$$","21101050","Blackcurrant, vanilla, black orchid, juniper","Dark berry fruit and soft vanilla.",0],
+["Bombay Sapphire","England","London Dry",47,"$$","32113200","Juniper, cubeb, grains of paradise, almond, cassia, lemon peel, licorice","Soft juniper with gentle peppery spice. Smooth and approachable.",1],
+["Bombay Dry (Original)","England","London Dry",43,"$","32012200","Juniper, coriander, angelica, almond, cassia, lemon peel","Drier and more classic than Sapphire, with warm spice.",0],
+["Bombay Sapphire Premier Cru","England","London Dry",47,"$$","34112100","Murcian lemon, mandarin, grapefruit, juniper","Sapphire with brighter, fresher citrus.",0],
+["Bombay Sapphire East","England","London Dry",42,"$$","32023200","Lemongrass, black peppercorn, juniper","Sapphire plus peppery heat and lemongrass.",0],
+["Bombay Bramble","England","Flavored",37.5,"$$","21001150","Blackberry, raspberry, juniper","Jammy blackberry and raspberry, light juniper.",1],
+["Plymouth Gin","England","Plymouth",41.2,"$$","32011310","Juniper, cardamom, coriander, orris, angelica, orange and lemon peel","Earthy, round and soft. Gentle juniper with a creamy root note.",1],
+["Plymouth Navy Strength","England","Plymouth",57,"$$","42012310","Plymouth recipe at higher proof","Plymouth's earthy profile turned up loud. Big, oily and warming.",0],
+["Fords Gin","England","London Dry",45,"$$","43112100","Juniper, jasmine, grapefruit peel, cassia, coriander, orris","Juniper and grapefruit with a jasmine lift. Made for cocktails.",1],
+["Sipsmith London Dry","England","London Dry",41.6,"$$","43111200","Juniper, Seville orange, lemon, coriander, cassia, licorice","Classic and polished. Dry juniper, marmalade citrus, soft spice.",1],
+["Sipsmith V.J.O.P.","England","London Dry",57.7,"$$$","51012200","Very Junipery Over Proof: triple-dose juniper","Pine forest in a bottle. Resinous, peppery and intense.",0],
+["Sipsmith Lemon Drizzle","England","Flavored",40.4,"$$","25000130","Lemon peel, lemon verbena, vanilla","Lemon cake in gin form. Sweet citrus.",0],
+["Hayman's Old Tom","England","Old Tom",41.4,"$$","32012130","Juniper, coriander, orange peel, cinnamon, licorice, lightly sweetened","Gently sweet with citrus and spice. Built for a Tom Collins or Martinez.",1],
+["Hayman's London Dry","England","London Dry",41.2,"$$","43011100","Juniper, coriander, citrus peels, cinnamon","Traditional, crisp and balanced.",0],
+["Hayman's Royal Dock","England","London Dry",57,"$$","42012200","Navy strength London Dry","Big juniper and spice at full proof.",0],
+["Greenall's Original","England","London Dry",40,"$","32011100","Juniper, coriander, lemon peel, angelica","Light, simple and dry.",0],
+["Broker's","England","London Dry",47,"$","42012100","Juniper, coriander, orris, cassia, nutmeg, citrus peel","No-nonsense London Dry with real backbone for the price.",0],
+["Bulldog","England","London Dry",40,"$","32211110","Dragon eye, lotus leaf, poppy, lavender, juniper","Smooth and lightly floral with a touch of exotic fruit.",1],
+["Whitley Neill","England","Contemporary",43,"$$","33101120","Baobab fruit, cape gooseberry, juniper, citrus","Soft and fruity with bright citrus. Easygoing.",0],
+["Whitley Neill Rhubarb & Ginger","England","Flavored",43,"$$","21001140","Rhubarb, ginger, juniper","Tart rhubarb with a ginger kick.",0],
+["Whitley Neill Blood Orange","England","Flavored",43,"$$","24000030","Blood orange, juniper","Bittersweet orange, juicy and bright.",0],
+["Martin Miller's","England / Iceland","London Dry",40,"$$","33111111","Juniper, cassia, orris, cucumber note, Icelandic water","Fresh and clean with a whisper of cucumber. Very smooth.",0],
+["Fifty Pounds","England","London Dry",43.5,"$$","42012200","Juniper, grains of paradise, savory, angelica, coriander, licorice","Dense juniper and peppery spice, rich mouthfeel.",0],
+["Portobello Road No. 171","England","London Dry",42,"$$","43002200","Juniper, nutmeg, lemon peel, cassia, orris, licorice","Textbook London Dry with a warm nutmeg twist.",0],
+["Langley's No. 8","England","London Dry",41.7,"$$","42003200","Juniper, coriander, cassia, nutmeg, orange peel","Big, spicy and juniper-heavy. Sturdy in a Negroni.",0],
+["Cotswolds Dry Gin","England","London Dry",46,"$$","44212100","Lavender, bay leaf, pink grapefruit, black pepper, juniper","Bold and oily; turns cloudy with ice. Grapefruit and lavender pop.",0],
+["Silent Pool","England","Contemporary",43,"$$","33311120","Honey, lavender, chamomile, kaffir lime, elderflower, pear","Honeyed and floral with bright lime. Soft and complex.",0],
+["Highclere Castle","England","London Dry",43.5,"$$$","33201120","Lavender, oats, juniper, citrus","Creamy oat texture with lavender and citrus.",0],
+["Warner's Harrington Dry","England","London Dry",44,"$$","32113110","Juniper, cardamom, coriander, citrus","Juniper with a fragrant cardamom kick. Full-bodied.",0],
+["Brockmans","England","Contemporary",40,"$$","22101150","Blueberry, blackberry, coriander, juniper, orange peel","Dark berry fruit and soft juniper.",0],
+["Opihr Oriental Spiced","England","Contemporary",42.5,"$$","22005200","Cubeb, black pepper, cardamom, cumin, ginger, coriander","Warm spice-market gin. Peppery and aromatic.",0],
+["Bloom","England","Contemporary",40,"$","12410020","Honeysuckle, chamomile, pomelo","Light, floral and delicate. A gentle intro to gin.",0],
+["Mermaid","England","Contemporary",42,"$$","33111003","Rock samphire, elderflower, grains of paradise, lemon zest","Bright citrus and fresh sea air. Clean coastal finish.",0],
+["Bathtub Gin","England","Contemporary",43.3,"$$","32013200","Cold-infused: orange peel, cinnamon, clove, cardamom, juniper","Warm baking spice and orange. Rich and slightly oily.",0],
+["Hepple","England","Contemporary",45,"$$$","42030201","Green juniper, Douglas fir, lovage, blackcurrant leaf","Fresh green juniper and resin. Lively and herbal.",0],
+["Salcombe Start Point","England","London Dry",44,"$$$","34111100","Pink grapefruit, lime, lemon, juniper","Clean juniper and fresh grapefruit. Coastal-crisp.",0],
+["Brighton Gin","England","Contemporary",40,"$$","33021110","Milk thistle, orange, lime, juniper","Bright citrus and soft herbs. Easy and fresh.",0],
+["Tarquin's Cornish","England","Contemporary",42,"$$","33310100","Devon violets, orange zest, juniper","Floral violet and orange. Smooth and lively.",0],
+["Conker Dorset","England","Contemporary",40,"$$","32121011","Elderberry, samphire, gorse flower, juniper","Fresh hedgerow gin with a hint of sea.",0],
+["Hendrick's","Scotland","Contemporary",41.4,"$$","22511112","Rose petal, cucumber, juniper, coriander, orris, chamomile","Rose and cucumber, soft and floral. The original 'unusual' gin.",1],
+["Hendrick's Orbium","Scotland","Contemporary",43.4,"$$$","21411301","Quinine, wormwood, blue lotus, rose, cucumber","Hendrick's with a bitter quinine edge and deeper, drier body.",0],
+["Hendrick's Neptunia","Scotland","Contemporary",43.4,"$$$","23311103","Coastal botanicals, golden lemon, rose, cucumber","Hendrick's by the sea: citrus, florals and a briny lift.",0],
+["Hendrick's Lunar","Scotland","Contemporary",43.4,"$$$","22421210","Night-blooming flowers, warm spice, rose, cucumber","Floral and gently spiced, rounder than the original.",0],
+["The Botanist","Scotland","Contemporary",46,"$$","32251201","22 Islay botanicals: mint, chamomile, heather, meadowsweet, juniper","Green and herbal with mint and heather. Complex and fresh.",1],
+["Caorunn","Scotland","Contemporary",41.8,"$$","31220130","Rowan berry, heather, Coul Blush apple, bog myrtle, dandelion","Crisp apple and wild heather. Light and fresh.",0],
+["Old Raj","Scotland","London Dry",46,"$$","42113201","Saffron, juniper, coriander, cassia, almond","Saffron-tinted and spicy. Rich and dry.",0],
+["Edinburgh Gin","Scotland","London Dry",43,"$$","32121110","Pine, lavender, milk thistle, heather, juniper","Easy and balanced with piney, lightly herbal notes.",0],
+["Edinburgh Seaside","Scotland","Contemporary",43,"$$","32120103","Scurvy grass, ground ivy, bladderwrack, juniper","Fresh, salty and green. Seaside in a glass.",0],
+["Isle of Harris","Scotland","Contemporary",45,"$$$","32010114","Sugar kelp, juniper, coriander, bitter orange","Briny and fresh. Sea-breeze savory with soft citrus.",0],
+["Rock Rose","Scotland","Contemporary",41.5,"$$","32221120","Rhodiola rosea, sea buckthorn, rowan berry, juniper","Floral and berry-bright with a rosy note.",0],
+["Lind & Lime","Scotland","Contemporary",44,"$$","34011100","Lime peel, pink peppercorn, juniper","Clean lime and peppery juniper. Crisp.",0],
+["Daffy's","Scotland","Contemporary",43.4,"$$","32131110","Lebanese mint, lemon, orange, juniper","Fresh mint and soft citrus. Smooth.",0],
+["Darnley's View","Scotland","Contemporary",40,"$$","32301110","Elderflower, lemon peel, juniper","Light elderflower and lemon.",0],
+["Drumshanbo Gunpowder","Ireland","Contemporary",43,"$$","34032100","Gunpowder green tea, grapefruit, lime, meadowsweet","Zesty grapefruit and green tea.",1],
+["Drumshanbo Sardinian Citrus","Ireland","Contemporary",43,"$$","35020100","Sardinian lemon, gunpowder tea, juniper","Big lemon zest over the Gunpowder base.",0],
+["Glendalough Wild Botanical","Ireland","Contemporary",41,"$$","31330220","Foraged elderflower, sweet woodruff, wild rose","Wild meadow florals and herbs, gently sweet.",0],
+["Dingle","Ireland","London Dry",42.5,"$$","41220220","Rowan berry, fuchsia, bog myrtle, heather, hawthorn","Soft juniper with wild berries and heather.",0],
+["Bertha's Revenge","Ireland","Contemporary",42,"$$","32211130","Whey spirit, sweet woodruff, elderflower, juniper","Creamy body with soft florals.",0],
+["Monkey 47","Germany","Contemporary",47,"$$$","43334331","47 botanicals: lingonberry, spruce, pepper, citrus, lavender","Dense and layered: spice, berries, pine and citrus at once.",1],
+["Siegfried Rheinland","Germany","Contemporary",41,"$$","32121210","Linden flower, juniper, citrus","Soft linden blossom and fresh juniper.",0],
+["Ferdinand's Saar","Germany","Contemporary",44,"$$$","32221120","Riesling-infused, rose, lavender, quince, juniper","Fruity and floral with a wine-like lift.",0],
+["The Duke Munich Dry","Germany","Contemporary",45,"$$","32211201","Hops, malt, lavender, juniper","Organic, malty and hoppy. Gentle bitterness.",0],
+["Elephant Gin","Germany","Contemporary",45,"$$$","31121230","Baobab, buchu, devil's claw, apple, juniper","Fruity and earthy with African herbs.",0],
+["Gin Sul","Germany","Contemporary",43,"$$","32131101","Rock rose, lemon, lavender, juniper","Sunny Portuguese-inspired herbs and citrus.",0],
+["Gin Mare","Spain","Mediterranean",42.7,"$$$","22051005","Arbequina olive, basil, rosemary, thyme, citrus","Savory Mediterranean herbs and olive. A garden in Spain.",1],
+["Gin Mare Capri","Spain","Mediterranean",42.7,"$$$","24030103","Lemon, bergamot, basil, olive","Gin Mare with a sunny lemon lift.",0],
+["Le Tribute","Spain","Contemporary",43,"$$$","25110010","Tangerine, lime, grapefruit, lemongrass, juniper","Citrus blast. Bright, juicy and fresh.",0],
+["Larios","Spain","London Dry",37.5,"$","32000110","Juniper, Mediterranean citrus","Light and simple. Spain's everyday gin.",0],
+["Nordés","Spain","Contemporary",40,"$$","22310121","Albariño grape spirit, sea salt, lemon verbena, sage","Floral, grapey and lightly salty.",0],
+["Puerto de Indias Strawberry","Spain","Flavored",37.5,"$","10000050","Strawberry, juniper","Sweet strawberry candy, very light gin character.",0],
+["Xoriguer Gin de Mahón","Spain","Regional",38,"$$","40010111","Juniper, wine-based spirit, Menorcan herbs","Rustic juniper, slightly sweet. Menorca's pomada gin.",0],
+["Ginraw","Spain","Contemporary",42,"$$$","33130101","Kaffir lime, lemon, laurel, kombu, juniper","Gastronomic gin: zesty, green and a little umami.",0],
+["Malfy Con Limone","Italy","Flavored",41,"$$","15000010","Amalfi lemon, juniper","Pure lemon zest. Limoncello energy without the sugar.",1],
+["Malfy Originale","Italy","London Dry",41,"$$","33010100","Juniper, lemon, coriander, angelica","Light and dry with Italian juniper and lemon.",0],
+["Malfy Rosa","Italy","Flavored",41,"$$","24100020","Sicilian pink grapefruit, rhubarb, juniper","Pink grapefruit, tart and refreshing.",1],
+["Malfy Arancia","Italy","Flavored",41,"$$","24000030","Sicilian blood orange, juniper","Juicy blood orange.",0],
+["Citadelle","France","Contemporary",44,"$$","32213210","19 botanicals: star anise, savory, violet, cardamom, cubeb","Round and spicy with a whisper of florals.",1],
+["Citadelle Jardin d'Été","France","Contemporary",41.5,"$$","24210020","Melon, lemon, yuzu, juniper","Summery melon and citrus.",0],
+["Citadelle Réserve","France","Aged",44,"$$$","32213420","Citadelle aged in multiple casks","Soft oak and spice over the Citadelle base.",0],
+["G'Vine Floraison","France","Contemporary",40,"$$","21410040","Ugni blanc grape spirit, green grape flower","Lush, grapey and floral.",0],
+["Christian Drouin Le Gin","France","Contemporary",42,"$$","32111130","Apple spirit, 30 apple varieties, juniper, ginger","Crisp apple and soft spice.",0],
+["Nolet's Silver","Netherlands","Contemporary",47.6,"$$$","11500040","Turkish rose, peach, raspberry","Lush rose and stone fruit. Very soft juniper.",1],
+["No. 3 London Dry","Netherlands","London Dry",46,"$$$","53002200","Juniper, grapefruit peel, orange peel, cardamom, coriander, angelica","Juniper-first, with grapefruit and cardamom. Martini royalty.",0],
+["Bobby's Schiedam","Netherlands","Contemporary",42,"$$","32024110","Lemongrass, clove, cubeb, cinnamon, juniper","Indonesian spice meets Dutch juniper.",0],
+["Bols Genever","Netherlands","Genever",42,"$$","20012322","Maltwine, juniper, hops, anise","Malty and bready, like gin's whiskey cousin.",1],
+["Copperhead","Belgium","Contemporary",40,"$$","32022120","Cardamom, coriander, orange peel, angelica, juniper","Soft spice and orange. Smooth.",0],
+["Hernö Swedish Excellence","Sweden","London Dry",40.5,"$$","32211110","Meadowsweet, lingonberry, juniper, black pepper","Fresh and floral with a creamy berry note.",0],
+["Hernö Juniper Cask","Sweden","Aged",47,"$$$","40011410","Rested in juniper-wood casks","Doubled-down juniper with woody depth.",0],
+["Napue","Finland","Contemporary",46.3,"$$","31120131","Rye spirit, cranberry, birch leaf, meadowsweet","Crisp rye body with tart cranberry and birch.",0],
+["Arctic Blue","Finland","Contemporary",46.5,"$$","31120130","Wild bilberry, Finnish pine, juniper","Fresh forest berries and pine.",0],
+["Junipero","USA","London Dry",49.3,"$$","51012200","Juniper-heavy, 12 botanicals","Big, bold juniper and dry spice. San Francisco's craft pioneer.",0],
+["Aviation","USA","New Western",42,"$$","11213111","Lavender, cardamom, sarsaparilla, anise, juniper","Soft juniper with lavender and spice.",1],
+["New Amsterdam","USA","Contemporary",40,"$","14000020","Citrus, juniper","Very light and citrusy. Mixes into anything.",1],
+["Seagram's Extra Dry","USA","American Dry",40,"$","33001110","Juniper, citrus, lightly barrel-rested","Mellow and soft. Easy-drinking value pick.",1],
+["Gilbey's","USA","American Dry",40,"$","32001100","Juniper, citrus, coriander","Simple, light and dry. A basic well gin.",1],
+["Burnett's London Dry","USA","American Dry",40,"$","31001110","Juniper, citrus","Light, soft and cheap. A rail-gin standard.",1],
+["Barr Hill","USA","Contemporary",45,"$$","20300140","Raw Vermont honey, juniper","Floral honey sweetness with gentle juniper.",1],
+["Barr Hill Tom Cat","USA","Aged",43,"$$$","20102440","Raw honey, juniper, new American oak","Honey, vanilla and oak. Sip it like whiskey.",0],
+["St. George Terroir","USA","New Western",45,"$$","40051403","Douglas fir, coastal sage, bay laurel, roasted coriander","A walk through a California forest. Woodsy and herbal.",1],
+["St. George Botanivore","USA","New Western",45,"$$","32232110","19 botanicals: angelica, bay, caraway, cilantro, lime, hops","Bright and green, packed with fresh herbs.",0],
+["St. George Dry Rye","USA","New Western",45,"$$","50003311","Pot-distilled rye, juniper, black pepper, caraway","Juniper and spicy rye bread. Bold and unusual.",0],
+["Death's Door","USA","New Western",47,"$$","40013000","Juniper, coriander, fennel","Just three botanicals. Clean juniper and fennel.",0],
+["Bluecoat","USA","American Dry",47,"$$","35001100","Organic juniper, orange peel, citrus","Bright citrus and fresh juniper. Zippy and clean.",1],
+["Bluecoat Barrel Finished","USA","Aged",47,"$$","32012420","Bluecoat rested in American oak","Citrusy gin with vanilla and oak.",0],
+["Uncle Val's Botanical","USA","New Western",45,"$$","22030003","Cucumber, sage, lemon, juniper, lavender","Garden-fresh: cucumber and sage lead.",0],
+["Gray Whale","USA","New Western",43,"$$","23020212","Mint, fir, kombu, almond, lime, juniper","Coastal California: minty, piney and a little briny.",0],
+["Leopold's American Small Batch","USA","American Dry",40,"$$","34101110","Pummelo, bergamot, orris, cardamom, juniper","Fragrant citrus with soft juniper.",0],
+["Leopold's Navy Strength","USA","American Dry",57,"$$","43012110","Bergamot, juniper, at navy strength","Big citrus and juniper at full proof.",0],
+["FEW American Gin","USA","American Dry",40,"$$","33002211","Grain-forward white whiskey base, vanilla, citrus","Grainy, rich and lightly vanilla-sweet.",0],
+["FEW Breakfast Gin","USA","Contemporary",40,"$$","33121110","Earl Grey tea, lemon, juniper","Bergamot tea and lemon. Brunch-friendly.",0],
+["Koval Dry Gin","USA","Contemporary",47,"$$","32211110","Organic grain, rose hips, juniper, citrus","Clean, gently floral Chicago craft gin.",0],
+["Letherbee Original","USA","London Dry",48,"$$","42013200","Juniper, spice, citrus","Robust, peppery Chicago gin for stirred drinks.",0],
+["Tattersall Gin","USA","American Dry",44,"$$","33121100","Juniper, citrus, herbs","Balanced, bright Minnesota gin.",0],
+["Vikre Boreal Juniper","USA","New Western",45,"$$","50031301","Wild juniper, northwoods botanicals","Forest-forward and resinous.",0],
+["Watershed Four Peel","USA","American Dry",40,"$$","25000100","Orange, lemon, lime, grapefruit peel","Four citrus peels, fresh and bright.",0],
+["Cardinal","USA","American Dry",42,"$$","32121100","Organic botanicals, juniper, citrus","Crisp and lightly herbal North Carolina gin.",0],
+["Distillery No. 209","USA","American Dry",46,"$$","34111100","Bergamot, lemon peel, cardamom, juniper","Bright bergamot and citrus with soft spice.",0],
+["Greenhook American Dry","USA","American Dry",47,"$$","33211100","Elderflower, chamomile, citrus, juniper","Floral and citrusy with real body.",0],
+["Perry's Tot","USA","American Dry",57,"$$","42022120","Wildflower honey, juniper, spice","Navy strength with a honeyed roundness.",0],
+["Dry Fly","USA","New Western",40,"$$","31131020","Apple, mint, lavender, hops, juniper","Soft apple and mint. Easy.",0],
+["Crater Lake Gin","USA","New Western",47.5,"$$","50011100","Fresh hand-picked juniper","Pure juniper, clean and piney.",0],
+["Big Gin","USA","London Dry",47,"$$","42012100","Juniper, coriander, cassia, citrus, orris","Seattle's juniper-forward workhorse.",0],
+["Ransom Old Tom","USA","Old Tom",44,"$$","21002422","Malted barley base, barrel aged, orange, hops","Malty and oaky. Pre-Prohibition style.",0],
+["Brooklyn Gin","USA","American Dry",40,"$$","35101100","Fresh hand-cracked citrus, lavender, juniper","Fresh-zested citrus over clean juniper.",0],
+["Dorothy Parker","USA","New Western",44,"$$","32311030","Elderberry, hibiscus, cinnamon, juniper","Fruity and floral with a hint of cinnamon.",0],
+["Waterloo No. 9","USA","New Western",47,"$$","32132211","Lavender, pecan, grapefruit, juniper","Texas gin with lavender and a nutty depth.",0],
+["Waterloo Antique","USA","Aged",47,"$$","31012430","Waterloo No. 9 barrel aged","Oaky, spicy and smooth.",0],
+["Empress 1908","Canada","Contemporary",42.5,"$$","22221100","Butterfly pea flower, Fairmont tea, grapefruit, rose, juniper","Soft citrus and tea. Turns pink when you add tonic.",1],
+["Empress Elderflower Rose","Canada","Contemporary",42.5,"$$","21410130","Elderflower, rose, butterfly pea flower","Floral and lightly sweet.",0],
+["Ungava","Canada","Contemporary",43.1,"$$","31130120","Arctic botanicals: Labrador tea, cloudberry, wild rosehip","Bright yellow, floral and herbal.",0],
+["Condesa","Mexico","Contemporary",45,"$$","21421010","Sage, jasmine, orange blossom, Mexican botanicals","Delicate florals and fresh sage.",0],
+["Ginebra San Miguel","Philippines","London Dry",40,"$","31000120","Juniper, citrus","World's best-selling gin. Mild and lightly sweet.",0],
+["Roku","Japan","Contemporary",43,"$$","23332000","Sakura flower and leaf, sencha, gyokuro, yuzu, sansho","Cherry blossom, green tea and yuzu. Delicate and precise.",1],
+["Ki No Bi Kyoto","Japan","Contemporary",45.7,"$$$","33132102","Yuzu, gyokuro tea, sansho, hinoki, rice spirit","Kyoto in a glass: yuzu, tea and peppery sansho.",0],
+["Nikka Coffey Gin","Japan","Contemporary",47,"$$","25013110","Yuzu, kabosu, amanatsu, shikuwasa, sansho, apple","Japanese citrus bomb with a peppery finish.",0],
+["Etsu","Japan","Contemporary",43,"$$","24221000","Yuzu, green tea, sansho","Bright yuzu and soft tea. Light and clean.",0],
+["Komasa Tangerine","Japan","Flavored",45,"$$$","15000010","Sakurajima komikan mandarin","Sweet, fragrant mandarin.",0],
+["Jaisalmer","India","Contemporary",43,"$$","33133100","Darjeeling green tea, vetiver, lemongrass, coriander","Tea and lemongrass with warm Indian spice.",0],
+["Hapusa","India","Contemporary",43,"$$","51002210","Himalayan juniper, mango, turmeric, ginger","Intense juniper with a turmeric-mango twist.",0],
+["Stranger & Sons","India","Contemporary",42.8,"$$","34013100","Gondhoraj lime, black pepper, mace, juniper","Zesty Indian citrus and pepper.",0],
+["Greater Than","India","London Dry",40,"$","31012100","Juniper, coriander, chamomile, ginger","Light, clean everyday gin.",0],
+["Four Pillars Rare Dry","Australia","Contemporary",41.8,"$$","34113100","Whole oranges, Tasmanian pepperberry, lemon myrtle, cardamom","Citrusy and spicy, very modern Australian.",0],
+["Four Pillars Bloody Shiraz","Australia","Flavored",37.8,"$$","21002050","Shiraz grapes steeped in Rare Dry","Juicy red wine fruit with spice.",0],
+["Four Pillars Olive Leaf","Australia","Mediterranean",43.8,"$$","22030103","Olive leaf, olive oil, rosemary, bay","Savory, smooth and oily-textured.",0],
+["Four Pillars Spiced Negroni","Australia","Contemporary",43.8,"$$","33004110","Blood orange, ginger, cinnamon, pepper","Spiced and orange-heavy. Made for Negronis.",0],
+["Archie Rose Signature Dry","Australia","Contemporary",42,"$$","32131111","River mint, lemon myrtle, blood lime, Dorrigo pepper","Native Australian herbs and citrus.",0],
+["Never Never Triple Juniper","Australia","London Dry",43,"$$","51012200","Juniper three ways: steeped, vapor-infused, distilled","Unapologetically piney.",0],
+["Never Never Southern Strength","Australia","London Dry",52,"$$","52012200","Juniper-heavy, high proof","Bold juniper with heat.",0],
+["Brookie's Byron Dry","Australia","Contemporary",46,"$$","32132121","Aniseed myrtle, finger lime, Davidson plum","Lush, subtropical and herbal.",0],
+["Melbourne Gin Company","Australia","Contemporary",42,"$$","33221100","Grapefruit, honey lemon myrtle, rosemary, juniper","Elegant citrus and soft herbs.",0],
+["Ink Gin","Australia","Contemporary",43,"$$","22211100","Butterfly pea flower, citrus, juniper","Color-changing gin with soft citrus.",0],
+["Scapegrace Classic","New Zealand","London Dry",42.2,"$$","33011100","Juniper, citrus, coriander","Clean and crisp.",0],
+["Scapegrace Black","New Zealand","Contemporary",41.6,"$$","22101140","Butterfly pea, aronia berry, saffron, pineapple","Jet-black and fruity.",0],
+["Inverroche Classic","South Africa","Contemporary",43,"$$","32131110","Cape fynbos botanicals, juniper","Fresh and herbal with a fynbos twist.",0],["Another Hendrick's","Scotland","Contemporary",44,"$$","23401320","Hendrick's base plus cacao and orange blossom, rose, cucumber","Chocolatey and floral with orange blossom. A permanent Hendrick's added in 2026.",0]
+,["Hendrick's Oasium","Scotland","Contemporary",43.4,"$$","24230140","Green herbs, citrus, tropical fruit, rose, cucumber","Pink grapefruit, papaya and green herbs. Bright and fruity.",0]
+,["Hendrick's Grand Cabaret","Scotland","Flavored",43.4,"$$","21221050","Stone fruit, sweet herbs, rose, cucumber","Peach and cherry with sweet herbs. Almost sippable like an Old Tom.",0]
+,["Hendrick's Flora Adora","Scotland","Contemporary",43.4,"$$","22521011","Rose, lavender, hibiscus, chamomile, elderflower, yarrow","Very floral. Some tasters find it soapy; floral fans love it.",0]
+,["Boodles","England","London Dry",45.2,"$$","40033201","Nutmeg, sage, rosemary, caraway, juniper; no citrus","Herbal and spicy with no citrus at all. Great in a martini.",0]
+,["Fleischmann's","USA","American Dry",40,"$","31001100","Juniper, citrus","Basic, light value gin for mixing.",0]
+,["Stirling London Dry","Netherlands","London Dry",40,"$","32111100","Juniper, lime, honeysuckle, herbs","Crisp, herbal and citrusy. A Total Wine value pick.",0]
+,["Isle of Barra","Scotland","Contemporary",46,"$$","32110114","Carrageen seaweed, juniper, citrus","Coastal and briny with soft citrus.",0]
+,["Garnish Island","Ireland","Contemporary",46,"$","31430110","Hibiscus, iris, rose, rosemary, thyme","Floral up front with rosemary and thyme underneath. Big flavor for the price.",0]
+,["Bohane Irish Gin","Ireland","Contemporary",40,"$","32321120","Blackberry, rosehip, elderflower, bergamot, bay, hibiscus, rose","Aromatic and floral with soft berry fruit.",0]
+,["Esmé","France","Contemporary",40,"$$","33410012","Juniper, citrus, spice, infused cucumber and rose petals","Rose and cucumber over juniper. Often compared to Hendrick's.",0]
+,["Esmé Pink","France","Flavored",40,"$$","11200050","Strawberry, raspberry, floral notes","Strawberry candy and pink lemonade.",0]
+,["Maior Gin","Spain","Mediterranean",40,"$$","23130120","Fig leaves, rosemary, Sóller orange peel, juniper","Silky Mallorcan gin with fig leaf, rosemary and orange.",0]
+,["Strange Nature","New Zealand","Contemporary",44,"$$","33111041","Sauvignon Blanc grape spirit, juniper only","Grapey and tropical: blackcurrant, lime and pineapple with pepper.",0]
+,["Ginarte","Italy","Contemporary",43.5,"$$","32330200","Tuscan juniper, lavender, elderflower, hibiscus, mountain pine, calamint","Floral and balsamic pine. Smooth and gentle.",0]
+,["Still G.I.N.","USA","Contemporary",42.5,"$$","24311011","Tangerine, jasmine, coriander, rose, grapefruit","Citrus-forward and soft. Built for gin and juice.",0]
+,["Akori","Spain","Contemporary",42,"$$","23002030","Rice spirit, dragon fruit, kumquat, ginger, bitter orange","Japanese-inspired: citrus, ginger and tropical fruit.",0]
+,["Akori Yuzu","Spain","Flavored",40,"$$","25001020","Yuzu, juniper, citrus","Bright yuzu citrus.",0]
+,["Roku Minori Select","Japan","Contemporary",43,"$$","23221040","Japanese melon, white peach, ume plum, yuzu, sencha","Roku with ripe melon and peach. Limited release.",0]
+,["Victoria Indigo","Canada","Contemporary",40,"$$","23112100","Butterfly pea flower, citrus, anise, juniper","Color-changing gin with citrus and sweet anise.",0]
+,["Victoria Elderflower Rose","Canada","Contemporary",40,"$$","21410130","Elderflower, rose, butterfly pea flower","Soft florals, lightly sweet.",0]
+,["Empress 1908 Cucumber Lemon","Canada","Contemporary",42.5,"$$","24110002","Cucumber, lemon, juniper","Fresh cucumber and lemon. Cool and light.",0]
+,["St. George Valley","USA","New Western",45,"$$","35320101","Orange blossom, Valencia and Seville orange, dill, cucumber, bay","Like walking through an orange grove in bloom.",0]
+,["McQueen and the Violet Fog","Brazil","Contemporary",40,"$$","33232110","Basil, rosemary, fennel, calamansi, star anise, açaí, jasmine, lemongrass","Candied lemon, soft violet and white pepper. Great in an Aviation.",0]
+,["Sông Cái Dry","Vietnam","Contemporary",45,"$$","44014200","Pomelo, black cardamom, green turmeric, jungle pepper","Spicy and citrusy. Stands up in a Negroni.",0]
+,["Sông Cái Floral","Vietnam","Contemporary",45,"$$$","32511010","Jasmine, ylang ylang, pomelo blossom, white jade orchid","Delicate, layered florals with fresh juniper.",0]
+,["J. Rieger Midwestern Dry","USA","London Dry",46.1,"$$","52012200","Juniper, coriander, angelica, orange peel, licorice","Kansas City gin designed by Tanqueray's former master distiller. Classic and juniper-forward.",0]
+,["Browne Family Northwest Botanical","USA","Contemporary",45,"$$","22420020","Lavender, rosehip, juniper","Lavender-led and soft.",0]
+,["Pacific Coast California Dry","USA","London Dry",50,"$$$","43111100","Juniper, coriander, lemon peel, lavender","Juniper-forward at 100 proof with a lavender lift.",0]
+,["GN Gin","USA","American Dry",44,"$$","33111100","8 botanicals, Sierra Nevada spring water","A modern twist on London Dry from California.",0,1]
+,["GM Gin","USA","American Dry",null,"$$","32111100","Not published","Few published tasting details. Placed as a classic dry gin.",0,1]
+,["Marin Coastal","USA","New Western",45,"$$","43121103","Nori seaweed, two junipers, angelica, California citrus, rosemary","Clean juniper and lemon with a coastal, savory edge.",0]
+,["Harmony Gin","USA","Contemporary",45,"$$","33221120","Elderberry, muscadine grape, green tea, hyssop, lemon and lime peel","Rose-tinted, fruity and herbal.",0]
+,["Roaring 20's Shanghai","China","Contemporary",40,"$$","33220010","Asian botanicals, citrus, mint","Light and crisp: lemon, mint and soft florals.",0]
+,["Coit Caravan","USA","New Western",47,"$$","31123400","Lapsang souchong tea, cardamom, long pepper, lavender","Smoky pine-dried tea with pepper. Unusual and bold.",0]
+,["72 Mile Backcountry","USA","American Dry",40,"$","43001100","Juniper, citrus, coriander, orange, almond","Classic and crisp from Lake Tahoe.",0]
+,["Rally American Gin","USA","Contemporary",45,"$$","33213100","12 botanicals, Italian spices, ginger, pepper, florals","Floral, citrusy and peppery.",0]
+,["Giant Rock","USA","London Dry",45,"$$","41013310","Licorice, allspice, black pepper, sugarcane spirit","Warm spice and licorice from Joshua Tree.",0]
+,["Moses Gin","Finland","Contemporary",40,"$$","41000120","Finnish juniper, sugar beet","Clean juniper with a hint of sweetness.",0]
+,["Woody Creek Mary's","USA","Contemporary",42,"$$","23312130","Butterfly pea, rhubarb, elderflower, yuzu, lavender, hibiscus","Fruity, floral and color-changing.",0]
+,["Stockholms Bränneri","Sweden","Contemporary",40,"$$","42221200","Heather, elderflower, rosemary, lemon, juniper","Nordic dry gin: roots, juniper and heather.",0]
+,["Prairie Organic","USA","American Dry",40,"$","31121111","Organic corn spirit, sage, juniper","Gentle and smooth with light herbs.",0]
+,["Wood's Treeline","USA","London Dry",45,"$$","42013100","Colorado juniper, pepper, anise, citrus","Bright and peppery Rocky Mountain gin.",0]
+,["Wood's Mountain Hopped","USA","New Western",45.75,"$$","32131201","Cascade hops, elderflower, juniper","Hoppy and herbal. For beer fans.",0]
+,["James Gin Asian Parsnip","England","Contemporary",40,"$$","21014220","Parsnip, grains of paradise, rosemary, Asian spices","Sweet, nutty and spicy. James May's first gin.",0]
+,["James Gin London Drizzle","England","Contemporary",40,"$$","21021302","Beetroot, lovage, ginger","Earthy and light, like rain on a pavement.",0]
+,["James Gin American Mustard","England","Contemporary",40,"$$","21013205","Mustard seed, gherkin, dried tomato, bay, caraway","Savory hot-dog-mustard gin. Wild in a Bloody Mary or Gibson.",0]
+,["James Gin California Dreamgin'","England","Contemporary",40,"$$","21032402","Mushroom, oregano, patchouli","Earthy and herbal. Very unusual.",0]
+,["The Sassenach","Scotland","London Dry",42,"$$","32211230","Crab apple, rhubarb, toasted oats, heather, pine, blaeberry","Apple and heather with soft pine.",0]
+,["Still Austin The Naturalist","USA","New Western",45,"$$","33211201","Grapefruit, elderflower, orris, angelica, Texas botanicals","Bright citrus and florals from Austin.",0]
+,["Indian Summer","Scotland","Contemporary",46,"$$","32013210","Saffron, cassia, orange, juniper","Golden saffron gin with warm spice.",0]
+,["Jodhpur Spicy","England","Flavored",null,"$$","31004110","Juniper with chili heat","Built for spicy cocktails. Few published details.",0,1]
+,["Sheringham Seaside","Canada","Contemporary",43,"$$","32210113","Winged kelp, rose, lemon, juniper","Floral and gently briny.",0]
+,["Engine","Italy","Contemporary",42,"$$","33130101","Sage, lemon, licorice, damask rose, juniper","Sage and lemon. Comes in a motor-oil style can.",0]
+,["Portofino","Italy","Mediterranean",43,"$$$","33221101","Ligurian rose, lavender, basil, citrus, pine","Elegant Riviera herbs and citrus.",0]
+,["Procera Blue Dot","Kenya","Contemporary",47,"$$$","42013210","African juniper (Juniperus procera), Kenyan citrus, spice","Rare African juniper. Bold and spicy.",0]
+,["Arbikie Nàdar","Scotland","Contemporary",43,"$$$","34121001","Pea spirit, lemongrass, lemon peel","Climate-positive pea gin. Bright and zesty.",0]
+,["Red Door Highland","Scotland","London Dry",45,"$","42121120","Heather, rowan, sea buckthorn, bitter orange, juniper","Highland botanicals, crisp and fruity.",0]
+,["Old Raj 110 Proof","Scotland","London Dry",55,"$$$","42113201","Saffron, juniper, coriander, cassia, almond","Old Raj's blue label at full strength.",0]
+,["The Botanist Cask Rested","Scotland","Aged",46,"$$$","32241401","The Botanist rested in casks","Islay herbs with oak and vanilla.",0]
+,["New Amsterdam Stratusphere","USA","London Dry",45,"$","42011100","Juniper, citrus","Higher-proof, more classic New Amsterdam.",0]
+,["St. George Rye Reposado","USA","Aged",49.5,"$$","40003421","Dry Rye gin rested in wine barrels","Spicy rye gin with oak and red wine.",0]
+,["Ki No Tea","Japan","Contemporary",45.1,"$$$","22151000","Gyokuro and tencha green tea, yuzu","Deep green tea. Elegant and savory.",0]
+,["Sipsmith Sloe","England","Sloe gin",29,"$$","11001150","Sloe berries steeped in gin","Sweet-tart plum liqueur. Sip or add to bubbly.",0]
+,["Common Ground Basil & Elderflower","USA","Contemporary",null,"$$","31430011","Basil, elderflower, cucumber, rose, lime and lemon peel","Herbal basil nose with a floral elderflower finish.",0]
+,["Common Ground Black Currant & Thyme","USA","Contemporary",null,"$$","32021040","Black currant, thyme, Meyer lemon, peppercorn","Savory thyme with dark berry fruit.",0]
+,["Greenhouse Classic","USA","American Dry",40,"$","32002100","Austrian juniper, coriander, citrus","Simple and soft. A Total Wine house brand.",0]
+,["Greenhouse Peppered","USA","Flavored",40,"$","31004002","Ghost chili pepper, cucumber","Cucumber with a ghost-pepper kick. Try it in a Bloody Mary.",0]
+,["Edinburgh Rhubarb & Ginger","Scotland","Flavored",40,"$$","21002140","Rhubarb, ginger, juniper","Tart rhubarb and warm ginger.",0]
+,["Edinburgh Lemon & Jasmine","Scotland","Flavored",40,"$$","24300020","Lemon, jasmine, juniper","Zesty lemon with jasmine.",0]
+,["Edinburgh Key Lime & Ginger","Scotland","Flavored",40,"$$","24002120","Key lime, ginger, juniper","Lime pie meets ginger.",0]
+,["Edinburgh The Meadows","Scotland","Contemporary",43,"$$","32320110","Meadow florals, juniper","Soft floral gin. Few published details.",0,1]
+,["Drumshanbo California Citrus","Ireland","Contemporary",43,"$$","35020100","California citrus, gunpowder tea","Gunpowder with juicy Californian citrus.",0]
+,["Drumshanbo Brazilian Pineapple","Ireland","Flavored",43,"$$","33021040","Pineapple, gunpowder tea, citrus","Tropical pineapple over the Gunpowder base.",0]
+,["Mermaid Pink","England","Flavored",38,"$$","22100050","Isle of Wight strawberries, rock samphire","Strawberry with a fresh coastal edge.",0]
+,["Mermaid Zest","England","Flavored",null,"$$","25010011","Citrus, rock samphire","Citrus-forward Mermaid.",0,1]
+,["Seagram's Lime Twisted","USA","Flavored",35,"$","15000020","Lime","Sweet lime. Easy mixer.",0]
+,["Aviation Cranberry & Blood Orange","USA","Flavored",null,"$","13101040","Cranberry, blood orange","Holiday fruit Aviation.",0,1]
+,["Citadelle Rouge","France","Flavored",null,"$$","22101050","Red fruits over Citadelle","Berry-red Citadelle. Few published details.",0,1]
+,["KOVAL Cranberry Gin","USA","Flavored",null,"$$","21001050","Cranberries, Koval dry gin","Tart cranberry Chicago gin liqueur.",0,1]
+,["G&J Greenall's Seville Orange","England","Flavored",37.5,"$","25000030","Seville orange","Bittersweet orange.",0]
+,["G&J Greenall's Emerald Star","England","London Dry",null,"$","32011100","Not published","Few published tasting details. Placed as a classic dry gin.",0,1]
+,["Gin di Fiori Blood Orange","Italy","Flavored",null,"$","14000030","Blood orange","Sweet blood orange. Few published details.",0,1]
+,["Gin di Fiori Grapefruit","Italy","Flavored",null,"$","14000020","Grapefruit","Pink grapefruit. Few published details.",0,1]
+,["Svedka Strawberry Pineapple","USA","Flavored",null,"$","10000050","Strawberry, pineapple","Sweet fruity mixer.",0,1]
+,["Awayuki Strawberry","Japan","Flavored",null,"$$","10100050","Strawberry","Japanese strawberry gin. Few published details.",0,1]
+,["24 Herbs Mango & Lime","Spain","Flavored",null,"$$","13001040","Mango, lime","Tropical mango. Few published details.",0,1]
+,["Le Cirque","—","Contemporary",null,"$$","32111100","Not published","Few published tasting details. Placed as a classic dry gin.",0,1]
+,["Bankers Club","USA","American Dry",40,"$","31001100","Juniper, citrus","Budget rail gin.",0,1]
+,["Miles London Dry","USA","London Dry",null,"$","31001100","Juniper, citrus","Budget gin. Few published details.",0,1]
+,["Starr Blu London Dry","USA","London Dry",null,"$","31001100","Juniper, citrus","Budget gin. Few published details.",0,1]
+,["Bond Street London Dry","England","London Dry",null,"$","32001100","Juniper, citrus","Value London Dry. Few published details.",0,1]
+,["Charing Cross London Dry","England","London Dry",null,"$","32001100","Juniper, citrus","Value London Dry. Few published details.",0,1]
+,["Tann's London Dry","Spain","London Dry",null,"$$","32011100","Juniper, citrus","Few published tasting details. Placed as a classic dry gin.",0,1]
+,["Buckley's Irish Dry","Ireland","London Dry",null,"$","32011100","Juniper, citrus","Value Irish gin. Few published details.",0,1]
+
+];
+const SERVE={
+"Hendrick's":["G&T","Cucumber slices","light or elderflower tonic"],
+"Hendrick's Orbium":["G&T","Cucumber and a lemon twist","Indian tonic"],
+"Hendrick's Neptunia":["G&T","Lemon wheel","light tonic"],
+"Gin Mare":["G&T","Rosemary sprig and an olive","Mediterranean tonic"],
+"Gin Mare Capri":["G&T","Lemon peel and basil","Mediterranean tonic"],
+"Four Pillars Olive Leaf":["Dirty Martini","Green olive",""],
+"Roku":["G&T","Thin ginger slices","light tonic"],
+"Empress 1908":["G&T","Grapefruit wedge","Indian tonic; it turns pink"],
+"Ink Gin":["G&T","Lemon wheel","Indian tonic; it changes color"],
+"Tanqueray No. Ten":["Martini","Grapefruit twist",""],
+"Monkey 47":["Martini","Orange twist","or a G&T with Mediterranean tonic"],
+"Aviation":["Aviation cocktail","Brandied cherry",""],
+"Plymouth Gin":["Martini","Lemon twist","also a great Gimlet"],
+"Malfy Con Limone":["G&T","Lemon wheel","light tonic"],
+"Bombay Bramble":["Bramble","Blackberry and lemon","or with tonic"],
+"Nolet's Silver":["G&T","Raspberries or a peach slice","light tonic"],
+"Death's Door":["Martini","Lemon twist",""],
+"The Botanist":["G&T","Thyme sprig and lemon","Indian tonic"],
+"St. George Terroir":["Martini","Rosemary sprig",""],
+"Gray Whale":["G&T","Lime and mint","Indian tonic"],
+"Isle of Harris":["Martini","Lemon twist and an olive",""],
+"Hayman's Old Tom":["Tom Collins","Lemon wheel and cherry","topped with soda"],
+"Ransom Old Tom":["Martinez","Orange twist",""],
+"Bols Genever":["Neat, chilled","",""],
+"Barr Hill":["Bee's Knees","Lemon twist",""],
+"Four Pillars Bloody Shiraz":["G&T","Orange slice","Indian tonic"],
+"Four Pillars Spiced Negroni":["Negroni","Orange slice",""],
+"Drumshanbo Gunpowder":["G&T","Grapefruit wedge","Indian tonic"],
+"Uncle Val's Botanical":["G&T","Cucumber and sage","light tonic"],
+"Opihr Oriental Spiced":["Gin & ginger ale","Orange peel",""],
+"Puerto de Indias Strawberry":["Gin & lemonade","Sliced strawberries",""],
+"FEW Breakfast Gin":["Gin Fizz","Lemon twist",""],
+"Another Hendrick's":["Spritz","Orange wheel","with prosecco and soda"],
+"James Gin American Mustard":["Bloody Mary","Pickle spear","also a Gibson"],
+"Greenhouse Peppered":["Bloody Mary","Celery and lime",""],
+"Sipsmith Sloe":["Sloe Gin Fizz","Lemon wheel","or topped with sparkling wine"],
+"McQueen and the Violet Fog":["Aviation","Brandied cherry",""],
+"Still G.I.N.":["Gin & juice","Orange wheel","or a G&T"],
+"Coit Caravan":["Martini","Lemon twist",""],
+"Empress 1908 Cucumber Lemon":["G&T","Cucumber ribbon","light tonic"],
+"Woody Creek Mary's":["G&T","Lemon wheel","it turns pink"],
+"Victoria Indigo":["G&T","Lemon wheel","it changes color"],
+"Esmé":["G&T","Cucumber slices","light tonic"]
+};
+// Total Wine & More prices seen on totalwine.com, Nov 2026 (750ml unless noted). Prices vary by store.
+const TW={"Gordon's":"$11.99","Tanqueray London Dry":"$18.99","Tanqueray No. Ten":"$35.99","Tanqueray Sevilla Orange":"$21.99","Bombay Sapphire":"$21.99","Bombay Dry (Original)":"$21.99","Hendrick's":"$31.99","Another Hendrick's":"$32.99","Hendrick's Orbium":"$40.99","Hendrick's Oasium":"$40.99","Hendrick's Grand Cabaret":"$40.99","Hendrick's Flora Adora":"$40.99","The Botanist":"$34.24","The Botanist Cask Rested":"$45.74","Monkey 47":"$53.99","Nolet's Silver":"$35.99","Dingle":"$37.99 (700ml)","No. 3 London Dry":"$47.99","Gray Whale":"$35.99","Plymouth Gin":"$34.99","Plymouth Navy Strength":"$38.99","Drumshanbo Gunpowder":"$28.99","Drumshanbo Sardinian Citrus":"$30.99","Drumshanbo California Citrus":"$36.99","Drumshanbo Brazilian Pineapple":"$36.99","Roku":"$27.99","Roku Minori Select":"$35.99","Mermaid":"$28.20","Mermaid Pink":"$31.99","Mermaid Zest":"$29.20","St. George Terroir":"$33.99","St. George Botanivore":"$33.99","St. George Valley":"$36.99","St. George Rye Reposado":"$42.99","Greenall's Original":"$14.99","G&J Greenall's Seville Orange":"$19.99","G&J Greenall's Emerald Star":"$17.99","Fords Gin":"$24.99","Highclere Castle":"$31.99","Hayman's Old Tom":"$31.99","Empress 1908":"$33.99","Empress Elderflower Rose":"$32.99","Empress 1908 Cucumber Lemon":"$32.99","Silent Pool":"$51.99","Citadelle":"$29.99","Citadelle Rouge":"$32.99 (700ml)","Gin Mare":"$40.99 (700ml)","Gin Mare Capri":"$48.99 (700ml)","Junipero":"$22.99","Malfy Rosa":"$26.99","Waterloo No. 9":"$33.99","Barr Hill":"$32.99","Barr Hill Tom Cat":"$51.99","Nordés":"$41.99 (700ml)","Condesa":"$41.99","Dry Fly":"$32.99","Bluecoat":"$24.09","Ki No Bi Kyoto":"$69.99","Ki No Tea":"$73.99","Seagram's Extra Dry":"$13.99","Glendalough Wild Botanical":"$31.99","Rock Rose":"$35.99 (700ml)","Nikka Coffey Gin":"$31.99","Puerto de Indias Strawberry":"$26.99","Greenhook American Dry":"$35.99","Edinburgh Gin":"$26.99 (700ml)","Edinburgh Seaside":"$31.99 (700ml)","Edinburgh Rhubarb & Ginger":"$31.99 (700ml)","Edinburgh Lemon & Jasmine":"$31.99 (700ml)","Edinburgh Key Lime & Ginger":"$32.99 (700ml)","Edinburgh The Meadows":"$31.99 (700ml)","Komasa Tangerine":"$34.99 (375ml)","Aviation":"$19.99","Aviation Cranberry & Blood Orange":"$19.99","Beefeater":"$27.99 (1L)","Gilbey's":"$17.49 (1.75L)","New Amsterdam":"$15.99 (1L)","New Amsterdam Stratusphere":"$27.99 (1.75L)","Old Raj 110 Proof":"$54.99 (700ml)","Sipsmith Sloe":"$37.99","Boodles":"$37.99 (1.75L)","Fleischmann's":"$17.99 (1.75L)","Stirling London Dry":"$14.99 (700ml)","Isle of Barra":"$29.99 (700ml)","Garnish Island":"$16.99","Bohane Irish Gin":"$23.99","Esmé":"$26.99","Esmé Pink":"$24.99","Maior Gin":"$32.99","Strange Nature":"$44.99 (700ml)","Ginarte":"$34.99","Le Cirque":"$29.99 (700ml)","Still G.I.N.":"$28.99","Akori":"$31.99","Akori Yuzu":"$31.99","Victoria Indigo":"$28.99","Victoria Elderflower Rose":"$29.99","McQueen and the Violet Fog":"$34.99","Sông Cái Dry":"$38.99 (700ml)","Sông Cái Floral":"$45.99 (700ml)","J. Rieger Midwestern Dry":"$38.99","Browne Family Northwest Botanical":"$30.99","Pacific Coast California Dry":"$59.99","GN Gin":"$34.99","GM Gin":"$34.99","Marin Coastal":"$34.99","Harmony Gin":"$31.99","Roaring 20's Shanghai":"$31.99 (700ml)","Coit Caravan":"$32.49","72 Mile Backcountry":"$23.99","Rally American Gin":"$36.49","Giant Rock":"$42.99","Moses Gin":"$34.99","Woody Creek Mary's":"$28.99","Stockholms Bränneri":"$31.99 (700ml)","Prairie Organic":"$24.39","Wood's Treeline":"$39.99","Wood's Mountain Hopped":"$39.99","James Gin Asian Parsnip":"$29.99 (700ml)","James Gin London Drizzle":"$29.99 (700ml)","James Gin American Mustard":"$29.99 (700ml)","James Gin California Dreamgin'":"$29.99 (700ml)","The Sassenach":"$42.99","Still Austin The Naturalist":"$28.99","Indian Summer":"$29.99","Jodhpur Spicy":"$33.99 (700ml)","Engine":"$28.39","Portofino":"$59.99","Procera Blue Dot":"$96.99","Arbikie Nàdar":"$46.99","Red Door Highland":"$16.99","Common Ground Basil & Elderflower":"$37.99","Common Ground Black Currant & Thyme":"$37.99","Greenhouse Classic":"$23.99","Greenhouse Peppered":"$23.99","Seagram's Lime Twisted":"$18.99 (1.75L)","KOVAL Cranberry Gin":"$30.99","Gin di Fiori Blood Orange":"$19.99","Gin di Fiori Grapefruit":"$19.99","Svedka Strawberry Pineapple":"$13.49","Awayuki Strawberry":"$35.99","24 Herbs Mango & Lime":"$25.99 (700ml)","Bankers Club":"$13.99 (1.75L)","Miles London Dry":"$8.99","Starr Blu London Dry":"$16.99 (1.75L)","Bond Street London Dry":"$16.49 (700ml)","Charing Cross London Dry":"$19.99","Tann's London Dry":"$29.99","Buckley's Irish Dry":"$18.99","Prairie Organic":"$24.39","Sheringham Seaside":"$40.99","Old Raj":"","Hendrick's Lunar":""};
+function twTier(t){const m=/\$([\d.]+)(?: \(([\d.]+)(ml|L)\))?/.exec(t||"");if(!m)return null;let ml=750;if(m[2])ml=m[3]==="L"?parseFloat(m[2])*1000:parseFloat(m[2]);const p=parseFloat(m[1])*750/ml;return p<25?"$":p<=45?"$$":"$$$";}
+const STYLE_GROUP=s=>({"London Dry":"London Dry","Plymouth":"London Dry","American Dry":"London Dry","Flavored":"Flavored","Sloe gin":"Flavored","Old Tom":"Old Tom & aged","Aged":"Old Tom & aged","Genever":"Old Tom & aged"}[s]||"Contemporary");
+const G=RAW.map((r,i)=>{const tw=TW[r[0]]||"";return{id:i,name:r[0],country:r[1],style:r[2],abv:r[3]==null?42:r[3],abvKnown:r[3]!=null,price:twTier(tw)||r[4],tw,v:[...r[5]].map(Number),bot:r[6],notes:r[7],common:!!r[8],limited:!!r[9],group:STYLE_GROUP(r[2])};});
+G.forEach(g=>{g.k=["London Dry","Contemporary","Old Tom & aged","Flavored"].indexOf(g.group);});
+const esc=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+function serve(g){
+  if(SERVE[g.name]){const[d,gar,t]=SERVE[g.name];return{drink:d,garnish:gar,tonic:t};}
+  const[J,C,F,H,S,E,R,V]=g.v;
+  if(g.style==="Genever")return{drink:"Neat, chilled",garnish:"",tonic:"or a Holland Old Fashioned"};
+  if(g.style==="Old Tom")return{drink:"Martinez",garnish:"Orange twist",tonic:"or a Tom Collins"};
+  if(g.style==="Aged")return{drink:"Negroni",garnish:"Orange peel",tonic:"or neat over one big cube"};
+  if(g.group==="Flavored"||R>=4)return{drink:"Gin & tonic or soda",garnish:C>=4?"Citrus wheel":"Fresh berries",tonic:"light tonic or lemonade"};
+  if(g.abv>=55)return{drink:"Gimlet",garnish:"Lime wheel",tonic:"also a punchy Negroni"};
+  if(V>=3||(H>=4&&J>=3))return{drink:"Martini",garnish:"Olive or a herb sprig",tonic:"or a G&T with Mediterranean tonic"};
+  if(S>=4)return{drink:"Negroni",garnish:"Orange peel",tonic:"or a G&T with Indian tonic"};
+  if(J>=4&&C<=3)return{drink:"Dry Martini",garnish:"Lemon twist",tonic:"also great in a Negroni"};
+  if(C>=4)return{drink:"G&T",garnish:"Lime or grapefruit wedge",tonic:"Indian tonic; also a Gimlet"};
+  if(F>=3)return{drink:"G&T",garnish:"Cucumber or lemon wheel",tonic:"light or elderflower tonic; also a French 75"};
+  if(H>=3)return{drink:"G&T",garnish:"Rosemary or thyme sprig",tonic:"Mediterranean tonic"};
+  return{drink:"G&T",garnish:"Lime wedge",tonic:"Indian tonic"};}
+
+// ---------- positions ----------
+G.forEach(g=>{const[J,C,F,H,S,E,R,V]=g.v;
+  g.ix=g.v.reduce((a,b)=>a+b,0)+(g.abv-40)*0.45;
+  g.iy=(J*.6+H+S*.7+E*.9+V*1.3)-(F*1.4+R+C*.5);});
+const W=1400,PADM=50,CX=W/2,CY=W/2;
+function spread(k){const vals=G.map(g=>g[k]),mn=Math.min(...vals),mx=Math.max(...vals),srt=[...vals].sort((a,b)=>a-b);
+  return v=>{const r=(srt.indexOf(v)+srt.lastIndexOf(v))/2/(srt.length-1)*2-1;const l=(v-mn)/(mx-mn)*2-1;return .72*r+.28*l;};}
+const fx=spread("ix"),fy=spread("iy");
+G.forEach(g=>{g.x=CX+fx(g.ix)*(W/2-PADM);g.y=CY-fy(g.iy)*(W/2-PADM);});
+for(let it=0;it<150;it++)for(let a=0;a<G.length;a++)for(let b=a+1;b<G.length;b++){
+  const A=G[a],B=G[b];let dx=B.x-A.x,dy=B.y-A.y,d=Math.hypot(dx,dy);
+  if(d<17){if(d<.01){dx=1;dy=((a+b)%3)-1;d=Math.hypot(dx,dy);}const m=(17-d)/2;A.x-=dx/d*m;A.y-=dy/d*m;B.x+=dx/d*m;B.y+=dy/d*m;}}
+G.forEach(g=>{g.x=Math.max(12,Math.min(W-12,g.x));g.y=Math.max(12,Math.min(W-12,g.y));});
+
+// ---------- similarity ----------
+const PR={"$":1,"$$":2,"$$$":3};
+function dist(a,b){let s=0;for(let k=0;k<8;k++){const w=k===0?1.2:1;s+=w*(a.v[k]-b.v[k])**2;}return Math.sqrt(s+((a.abv-b.abv)/6)**2);}
+const pctOf=d=>Math.max(5,Math.round(100*Math.exp(-d/5.5)));
+const okBuy=o=>PR[o.price]<=maxPrice&&(!onlyTW||o.tw);
+function similar(g,n=6){return G.filter(o=>o!==g&&okBuy(o)).map(o=>({o,d:dist(g,o)})).sort((p,q)=>p.d-q.d).slice(0,n).map(x=>({...x,pct:pctOf(x.d)}));}
+function backups(g){return G.filter(o=>o!==g&&o.common&&(g.group==="Flavored"||o.group!=="Flavored")).map(o=>({o,d:dist(g,o)})).sort((p,q)=>p.d-q.d).slice(0,2);}
+function compare(g,o){
+  const share=DIMS.filter((_,k)=>g.v[k]>=3&&o.v[k]>=3).map(s=>s.toLowerCase());
+  const diff=DIMS.map((n,k)=>({n,d:o.v[k]-g.v[k]})).filter(x=>Math.abs(x.d)>=2).sort((a,b)=>Math.abs(b.d)-Math.abs(a.d)).slice(0,2).map(x=>(x.d>0?"more ":"less ")+x.n.toLowerCase());
+  let s=share.length?"Both lean "+share.join(", ")+".":"Close in overall balance.";
+  if(diff.length)s+=" Expect "+diff.join(" and ")+".";
+  return s;}
+
+// ---------- map ----------
+const svg=document.getElementById("map"),NS="http://www.w3.org/2000/svg";
+const mctx=document.createElement("canvas").getContext("2d");
+const textW=t=>{mctx.font="700 100px Outfit, sans-serif";return mctx.measureText(t).width/100;};
+G.forEach(g=>{g.label=g.name.toUpperCase();g.lw=textW(g.label)+.02*g.label.length;});
+let vb={x:0,y:0,w:W,h:W};
+function base(){
+  let s=`<g id="grid">`;
+  for(let i=0;i<=10;i++){const p=i*W/10;s+=`<line x1="${p}" y1="0" x2="${p}" y2="${W}"/><line x1="0" y1="${p}" x2="${W}" y2="${p}"/>`;}
+  s+=`</g><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#06496b"/></marker></defs>
+  <line class="axl" x1="0" y1="${CY}" x2="${W}" y2="${CY}" marker-start="url(#ar)" marker-end="url(#ar)"/>
+  <line class="axl" x1="${CX}" y1="0" x2="${CX}" y2="${W}" marker-start="url(#ar)" marker-end="url(#ar)"/>
+  <g id="links"></g><g id="leaders"></g><g id="dots"></g><g id="labels"></g><g id="spark"></g>`;
+  svg.innerHTML=s;
+  svg.querySelectorAll("#grid line").forEach(l=>{l.setAttribute("stroke","#a6deee");l.setAttribute("vector-effect","non-scaling-stroke");});
+  svg.querySelectorAll(".axl").forEach(l=>{l.setAttribute("stroke","#06496b");l.setAttribute("stroke-width","2.2");l.setAttribute("vector-effect","non-scaling-stroke");});
+  svg.querySelector("#dots").innerHTML=G.map(g=>`<g class="g k${g.k}" data-id="${g.id}"><circle class="hit" cx="${g.x.toFixed(1)}" cy="${g.y.toFixed(1)}" fill="transparent"/><circle class="dot" cx="${g.x.toFixed(1)}" cy="${g.y.toFixed(1)}" stroke-width="0"/></g>`).join("");
+}
+const px=()=>vb.w/Math.max(1,svg.clientWidth); // svg units per screen pixel
+function applyVB(){svg.setAttribute("viewBox",`${vb.x} ${vb.y} ${vb.w} ${vb.h}`);}
+let labelRaf=0;
+function scheduleLabels(){if(!labelRaf)labelRaf=requestAnimationFrame(()=>{labelRaf=0;placeLabels();});}
+function isDim(g){return(filt!=="All"&&g.group!==filt)||(cur&&g!==cur&&!simIds.has(g.id));}
+function placeLabels(){
+  const u=px(),fs=12*u,h=20*u,pad=6*u,r=Math.max(4.5,5.5)*u;
+  svg.querySelectorAll("#dots .g").forEach(el=>{const g=G[+el.dataset.id];el.children[0].setAttribute("r",15*u);el.children[1].setAttribute("r",(g===cur?8:r/u)*u);
+    el.children[1].setAttribute("stroke-width",(ratings[g.name]?3:1.4)*u);});
+  // priority: selection, matches, rated, stocked, rest; dimmed last
+  const pri=g=>g===cur?0:simIds.has(g.id)?1:isDim(g)?9:ratings[g.name]?2:g.common?3:4;
+  const order=[...G].sort((a,b)=>pri(a)-pri(b)||a.lw-b.lw);
+  const placed=[],cell=60*u,grid=new Map();
+  const key=(i,j)=>i+","+j;
+  const addR=rc=>{for(let i=Math.floor(rc.x/cell);i<=Math.floor((rc.x+rc.w)/cell);i++)for(let j=Math.floor(rc.y/cell);j<=Math.floor((rc.y+rc.h)/cell);j++){const k=key(i,j);(grid.get(k)||grid.set(k,[]).get(k)).push(rc);}};
+  const hits=rc=>{for(let i=Math.floor(rc.x/cell);i<=Math.floor((rc.x+rc.w)/cell);i++)for(let j=Math.floor(rc.y/cell);j<=Math.floor((rc.y+rc.h)/cell);j++){const L=grid.get(key(i,j));if(L)for(const o of L)if(rc.x<o.x+o.w&&rc.x+rc.w>o.x&&rc.y<o.y+o.h&&rc.y+rc.h>o.y)return true;}return false;};
+  G.forEach(g=>addR({x:g.x-r,y:g.y-r,w:2*r,h:2*r,dot:1}));
+  const view={x:vb.x-200*u,y:vb.y-100*u,w:vb.w+400*u,h:vb.h+200*u};
+  let labs="",lines="",top="";const labelsOnly=[];
+  for(const g of order){
+    if(g.x<view.x||g.x>view.x+view.w||g.y<view.y||g.y>view.y+view.h)continue;
+    const w=g.lw*fs+2*pad,must=pri(g)<=1;let best=null;
+    outer:for(const off of [10,22,38])for(const[dx,dy]of[[1,0],[-1,0],[0,-1],[0,1],[1,-1],[-1,-1],[1,1],[-1,1]]){
+      const o=off*u,x=dx===0?g.x-w/2:dx>0?g.x+o:g.x-o-w,y=dy===0?g.y-h/2:dy<0?g.y-o-h:g.y+o;
+      const rc={x,y,w,h};if(x<vb.x+2*u||x+w>vb.x+vb.w-2*u||y<vb.y+2*u||y+h>vb.y+vb.h-2*u)continue;if(!hits(rc)){best=rc;break outer;}}
+    if(!best&&must){let bs=1e9;for(const off of [10,22,38,60,90])for(const[dx,dy]of[[1,0],[-1,0],[0,-1],[0,1],[1,-1],[-1,-1],[1,1],[-1,1]]){
+      const o=off*u,x=dx===0?g.x-w/2:dx>0?g.x+o:g.x-o-w,y=dy===0?g.y-h/2:dy<0?g.y-o-h:g.y+o;
+      const out=(x<vb.x||x+w>vb.x+vb.w||y<vb.y||y+h>vb.y+vb.h)?50:0;
+      const ov=labelsOnly.reduce((n,o2)=>n+(x<o2.x+o2.w&&x+w>o2.x&&y<o2.y+o2.h&&y+h>o2.y?1:0),0);
+      const sc=ov*100+out+off*.3;if(sc<bs){bs=sc;best={x,y,w,h};}}}
+    if(!best)continue;
+    addR(best);labelsOnly.push(best);
+    const lx=Math.max(best.x,Math.min(g.x,best.x+best.w)),ly=Math.max(best.y,Math.min(g.y,best.y+best.h));
+    const cls=`g k${g.k}${g===cur?" sel":""}${simIds.has(g.id)?" sim":""}${isDim(g)?" dim":""}`;
+    if(Math.hypot(lx-g.x,ly-g.y)>8*u)lines+=`<line class="${cls}" x1="${g.x}" y1="${g.y}" x2="${lx}" y2="${ly}" class="ldr" stroke-width="1.2" vector-effect="non-scaling-stroke"/>`;
+    const html=`<g class="${cls}" data-id="${g.id}"><g class="lbl"><rect x="${best.x}" y="${best.y}" width="${w}" height="${h}" rx="${2*u}" stroke-width="${1.3*u}"/><text x="${best.x+w/2}" y="${best.y+h/2+fs*.36}" font-size="${fs}" text-anchor="middle">${esc(g.label)}</text></g></g>`;if(g===cur)top=html;else labs+=html;}
+  svg.querySelector("#labels").innerHTML=labs+top;
+  const SP="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z";
+  svg.querySelector("#spark").innerHTML=cur?[[-15,-17,.75,0],[9,11,.5,1.1],[-12,10,.4,.6]].map(([dx,dy,k,dl])=>`<g transform="translate(${cur.x+dx*u} ${cur.y+dy*u}) scale(${k*u})"><path class="spk" d="${SP}" fill="#fff" stroke="#ff3d8b" stroke-width="1.2" style="animation-delay:${dl}s" transform="translate(-12 -12)"/></g>`).join(""):"";svg.querySelector("#leaders").innerHTML=lines;
+}
+function fitAll(){const cw=svg.clientWidth||1,ch=svg.clientHeight||1,a=ch/cw;
+  if(a>=1){vb={x:0,w:W,h:W*a,y:-(W*a-W)/2};}else{vb={y:0,h:W,w:W/a,x:-(W/a-W)/2};}applyVB();scheduleLabels();}
+function zoomTo(pts){const cw=svg.clientWidth||1,ch=svg.clientHeight||1,a=ch/cw;
+  let x0=Math.min(...pts.map(p=>p.x)),x1=Math.max(...pts.map(p=>p.x)),y0=Math.min(...pts.map(p=>p.y)),y1=Math.max(...pts.map(p=>p.y));
+  const m=140;x0-=m;x1+=m;y0-=m;y1+=m;let w=Math.max(x1-x0,(y1-y0)/a,W/6);w=Math.min(w,W*1.2);
+  vb={w,h:w*a,x:(x0+x1)/2-w/2,y:(y0+y1)/2-w*a/2};applyVB();scheduleLabels();}
+function zoomBy(f,cxp,cyp){const nw=Math.max(W/14,Math.min(W*1.6,vb.w*f)),k=nw/vb.w;
+  if(cxp==null){cxp=vb.x+vb.w/2;cyp=vb.y+vb.h/2;}
+  vb={x:cxp-(cxp-vb.x)*k,y:cyp-(cyp-vb.y)*k,w:nw,h:vb.h*k};applyVB();scheduleLabels();}
+document.getElementById("zin").onclick=()=>zoomBy(1/1.6);
+document.getElementById("zout").onclick=()=>zoomBy(1.6);
+document.getElementById("zfit").onclick=fitAll;
+document.getElementById("zsel").onclick=()=>{if(cur)zoomTo([cur,...curSims.map(s=>s.o)]);};
+// pointer pan / pinch / tap
+const ptrs=new Map();let moved=0,downEl=null,pinch0=null;
+const toSvg=(cx,cy)=>{const r=svg.getBoundingClientRect();return{x:vb.x+(cx-r.left)/r.width*vb.w,y:vb.y+(cy-r.top)/r.height*vb.h};};
+svg.addEventListener("pointerdown",e=>{svg.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===1){moved=0;downEl=e.target;}if(ptrs.size===2){const[a,b]=[...ptrs.values()];pinch0={d:Math.hypot(a.x-b.x,a.y-b.y),w:vb.w};}});
+svg.addEventListener("pointermove",e=>{const p=ptrs.get(e.pointerId);if(!p)return;
+  const dx=e.clientX-p.x,dy=e.clientY-p.y;
+  if(ptrs.size===1){moved+=Math.abs(dx)+Math.abs(dy);if(moved>6){const u=px();vb.x-=dx*u;vb.y-=dy*u;applyVB();scheduleLabels();}p.x=e.clientX;p.y=e.clientY;}
+  else if(ptrs.size===2){p.x=e.clientX;p.y=e.clientY;moved=99;const[a,b]=[...ptrs.values()];const d=Math.hypot(a.x-b.x,a.y-b.y);
+    const c=toSvg((a.x+b.x)/2,(a.y+b.y)/2);zoomBy(pinch0.w*pinch0.d/d/vb.w,c.x,c.y);}});
+const endP=e=>{if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);
+  if(ptrs.size===0&&moved<=6&&downEl){const el=downEl.closest&&downEl.closest("[data-id]");if(el)select(G[+el.dataset.id],true);}
+  if(ptrs.size<2)pinch0=null;if(ptrs.size===0)downEl=null;};
+svg.addEventListener("pointerup",endP);svg.addEventListener("pointercancel",e=>{ptrs.delete(e.pointerId);moved=99;});
+const ro=new ResizeObserver(()=>{if(cur&&isPhone())zoomTo([cur,...curSims.map(s=>s.o)]);else fitAll();});
+
+// ---------- state + UI ----------
+let onlyTW=false,filt="All",maxPrice=3,cur=null,curSims=[],simIds=new Set(),ratings={};
+const isPhone=()=>window.innerWidth<1051;
+const q=document.getElementById("q"),sugg=document.getElementById("sugg"),detail=document.getElementById("detail"),sims=document.getElementById("sims"),mine=document.getElementById("mine"),sync=document.getElementById("sync");
+document.getElementById("count").textContent=G.length+" gins by intensity and flavor direction";
+const norm=t=>t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9 ]/g,"").trim();
+function find(t){const n=norm(t);if(!n)return[];
+  const sc=g=>{const m=norm(g.name);return m===n?0:m.startsWith(n)?1:m.split(" ").some(w=>w.startsWith(n))?2:m.includes(n)?3:norm(g.country+" "+g.style+" "+g.bot).includes(n)?4:9;};
+  return G.map(g=>({g,s:sc(g)})).filter(x=>x.s<9).sort((a,b)=>a.s-b.s||a.g.name.length-b.g.name.length).map(x=>x.g);}
+let act=-1,list=[];
+function showSugg(){list=find(q.value).slice(0,8);act=list.length?0:-1;
+  sugg.innerHTML=list.length?list.map((g,i)=>`<div role="option" data-i="${i}" class="${i===act?"act":""}"><span>${esc(g.name)}</span><small>${g.style} · ${g.country}</small></div>`).join(""):(q.value.trim()?`<div style="cursor:default"><span>Not on the map yet. Try the brand name, like Tanqueray or Roku.</span></div>`:"");
+  sugg.classList.toggle("on",!!q.value.trim());}
+const qclr=document.getElementById("qclr");
+const syncClr=()=>{qclr.hidden=!q.value;};
+q.addEventListener("input",()=>{syncClr();showSugg();});
+qclr.addEventListener("click",()=>{q.value="";syncClr();list=[];sugg.classList.remove("on");q.focus();});
+q.addEventListener("keydown",e=>{if(!list.length)return;
+  if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();act=(act+(e.key==="ArrowDown"?1:-1)+list.length)%list.length;[...sugg.children].forEach((c,i)=>c.classList.toggle("act",i===act));}
+  if(e.key==="Escape")sugg.classList.remove("on");});
+sugg.addEventListener("mousedown",e=>{const d=e.target.closest("[data-i]");if(d){e.preventDefault();select(list[+d.dataset.i]);}});
+q.addEventListener("blur",()=>setTimeout(()=>sugg.classList.remove("on"),150));
+document.getElementById("f").addEventListener("submit",e=>{e.preventDefault();const r=list[act]||find(q.value)[0];if(r){select(r);q.blur();}else showSugg();});
+function setSkin(k,store){document.documentElement.dataset.skin=k;document.querySelectorAll(".skins button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.skin===k));if(store){try{localStorage.setItem("gin-skin",k)}catch(e){}save();}}
+document.querySelector(".skins").addEventListener("click",e=>{const b=e.target.closest("[data-skin]");if(b)setSkin(b.dataset.skin,true);});
+setSkin(document.documentElement.dataset.skin||"aqua",false);
+document.getElementById("fyjump").addEventListener("click",e=>{e.preventDefault();document.getElementById("fycard").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});});
+document.getElementById("rnd").addEventListener("click",()=>select(G[Math.floor(Math.random()*G.length)]));
+
+const priceEl=document.getElementById("price"),chips=document.getElementById("chips");
+const PRICES=[["Any",3],["$$",2],["$",1]],GROUPS=["All","London Dry","Contemporary","Old Tom & aged","Flavored"];
+function drawChips(){
+  priceEl.innerHTML=`<span>Price up to</span>`+PRICES.map(([l,v])=>`<button type="button" class="chip" aria-pressed="${v===maxPrice}" data-p="${v}">${l==="Any"?"Any price":l}</button>`).join("")+`<button type="button" class="chip" aria-pressed="${onlyTW}" data-tw="1">At Total Wine</button>`;
+  const SW={"London Dry":"#00a3c4","Contemporary":"#8bd400","Old Tom & aged":"#ff8c1a","Flavored":"#a57bff"};
+  chips.innerHTML=GROUPS.map(g=>`<button type="button" class="chip" aria-pressed="${g===filt}" data-g="${g}">${SW[g]?`<i class="sw" style="background:${SW[g]}"></i>`:""}${g}</button>`).join("");}
+priceEl.addEventListener("click",e=>{const t=e.target.closest("[data-tw]");if(t){onlyTW=!onlyTW;drawChips();if(cur)select(cur);renderMine();save();return;}const b=e.target.closest("[data-p]");if(!b)return;maxPrice=+b.dataset.p;drawChips();if(cur)select(cur);renderMine();save("prefs");});
+chips.addEventListener("click",e=>{const b=e.target.closest("[data-g]");if(!b)return;filt=b.dataset.g;drawChips();paint();});
+
+function paint(){
+  svg.querySelectorAll("#dots .g").forEach(el=>{const g=G[+el.dataset.id];
+    el.classList.toggle("dim",isDim(g));el.classList.toggle("sel",g===cur);el.classList.toggle("sim",simIds.has(g.id));
+    el.classList.toggle("liked",ratings[g.name]>0);el.classList.toggle("nope",ratings[g.name]===-1);});
+  const L=svg.querySelector("#links");
+  L.innerHTML=cur?curSims.map(s=>`<line x1="${cur.x}" y1="${cur.y}" x2="${s.o.x}" y2="${s.o.y}" stroke="#ff3d8b" stroke-width="2.4" stroke-dasharray="6 5" vector-effect="non-scaling-stroke"/>`).join(""):"";
+  const d=svg.querySelector("#dots"),c=cur&&d.querySelector(`.g[data-id="${cur.id}"]`);if(c)d.appendChild(c);
+  scheduleLabels();}
+
+function lean(g){const top=g.v.map((x,k)=>({x,k})).sort((a,b)=>b.x-a.x).filter(t=>t.x>=3).slice(0,3).map(t=>DIMS[t.k].toLowerCase());return top.length?top.join(", "):"balanced";}
+const RVAL={2:1,1:.78,"-1":0};const RNAME={2:"Loved it",1:"Liked it","-1":"Not for me"};
+function odds(g){
+  const rt=ratings[g.name];
+  if(rt)return `<div class="odds"><div class="top"><span class="lab">Your rating</span><span class="verdict">${RNAME[rt]}</span></div><small>Change it with the buttons below. Your other ratings shape the odds for every other gin.</small></div>`;
+  const rated=G.filter(o=>ratings[o.name]);
+  if(!rated.length)return `<div class="odds"><div class="top"><span class="lab">Your odds</span><span class="verdict">Not enough data</span></div><small>Rate a few gins you've tried (Loved it, Liked it, Not for me) and every gin will show how likely you are to like it.</small></div>`;
+  const P0=.06;let num=.5*P0,den=P0,best=[];
+  rated.forEach(o=>{const m=pctOf(dist(g,o))/100,w=m**3;num+=w*RVAL[ratings[o.name]];den+=w;best.push({o,w,m});});
+  const p=Math.round(100*num/den);best.sort((a,b)=>b.w-a.w);const top=best[0].m;
+  const conf=top>=.65&&rated.length>=3?"high":top>=.45?"medium":"low";
+  const verdict=p>=75?"Very likely to like":p>=58?"Likely to like":p>42?"Toss-up":p>25?"Unlikely to like":"Very unlikely to like";
+  const why=best.slice(0,2).map(b=>`${esc(b.o.name)} (${RNAME[ratings[b.o.name]].toLowerCase()}, ${pctOf(dist(g,b.o))}% match)`).join(" and ");
+  return `<div class="odds" aria-label="${p} percent likely you will like it"><div class="top"><span class="lab">Your odds</span><span class="big">${p}%</span></div><div class="verdict">${verdict}</div><div class="meter"><i style="left:${Math.min(97,Math.max(3,p))}%"></i></div><small>Closest to ${why}. Based on ${rated.length} rating${rated.length>1?"s":""}; confidence: ${conf}.</small></div>`;}
+function select(g,fromMap){cur=g;curSims=similar(g);simIds=new Set(curSims.map(s=>s.o.id));q.value=g.name;qclr.hidden=false;sugg.classList.remove("on");
+  const sv=serve(g),bk=backups(g),rt=ratings[g.name]||0;
+  detail.innerHTML=`<h3>${esc(g.name)}</h3>
+   <div class="meta"><span>${g.style}</span><span>${esc(g.country)}</span><span>${g.abvKnown?g.abv+"% ABV":"ABV n/a"}</span><span>${g.price}</span>${g.common?"<span>Widely stocked</span>":""}${g.tw?`<span>Total Wine ${g.tw}</span>`:""}</div>${g.limited?`<p class="bot" style="margin-top:-4px">Limited info: few published tasting details, so this placement is a rough guess.</p>`:""}${odds(g)}
+   <div class="order"><b>Order it as</b><div class="drink">${esc(sv.drink)}</div><div class="more">${sv.garnish?"Garnish: "+esc(sv.garnish):""}${sv.garnish&&sv.tonic?" · ":""}${esc(sv.tonic||"")}</div></div>
+   <div class="backup"><b>Bar doesn't have it? Ask for</b>${bk.map(b=>`<button type="button" data-id="${b.o.id}">${esc(b.o.name)} · ${pctOf(b.d)}%</button>`).join("")}</div>
+   <div class="rate" role="group" aria-label="Rate this gin"><button type="button" class="love" data-r="2" aria-pressed="${rt===2}">Loved it</button><button type="button" class="up" data-r="1" aria-pressed="${rt===1}">Liked it</button><button type="button" class="down" data-r="-1" aria-pressed="${rt===-1}">Not for me</button>${rt?`<button type="button" class="clr" data-r="0" aria-label="Clear rating">Clear</button>`:""}</div>
+   <p class="notes">${esc(g.notes)}</p>
+   <p class="bot"><strong>Signature botanicals:</strong> ${esc(g.bot)}<br><strong>Leans:</strong> ${lean(g)}</p>
+   <details class="prof"${isPhone()?"":" open"}><summary>Flavor breakdown</summary><div class="bars">${DIMS.map((d,k)=>`<div class="bar"><span>${d}</span><i><b style="width:${g.v[k]*20}%"></b></i><em>${g.v[k]}</em></div>`).join("")}</div></details>`;
+  sims.innerHTML=curSims.length?curSims.map(s=>`<li><button type="button" data-id="${s.o.id}"><strong>${esc(s.o.name)}</strong><span class="pct">${s.pct}% · ${s.o.price}</span><small>${s.o.style} · ${esc(s.o.country)}${s.o.tw?" · TW "+s.o.tw:""}. ${compare(g,s.o)}</small></button></li>`).join(""):`<li class="empty">Nothing at this price. Try "Any price".</li>`;
+  paint();
+  if(isPhone()||vb.w<W*.9)zoomTo([g,...curSims.map(s=>s.o)]);
+  if(fromMap&&isPhone())detail.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  try{localStorage.setItem("gin-last",g.name)}catch(e){}}
+document.addEventListener("click",e=>{const b=e.target.closest("aside [data-id], .backup [data-id]");if(b){select(G[+b.dataset.id]);return;}
+  const r=e.target.closest(".rate [data-r]");if(r&&cur){const v=+r.dataset.r;if(v)ratings[cur.name]=v;else delete ratings[cur.name];select(cur);renderMine();save();}});
+
+const W8={2:2.2,1:1,"-1":-0.8};
+function forYou(n=12){const rated=G.filter(g=>ratings[g.name]);if(!rated.some(g=>ratings[g.name]>0))return[];
+  return G.filter(g=>!ratings[g.name]&&okBuy(g)).map(g=>{let s=0,best=null,bs=0;rated.forEach(r=>{const w=W8[ratings[r.name]],sim=Math.exp(-dist(g,r)/4),c=w*sim;s+=c;if(w>0&&c>bs){bs=c;best=r;}});return{g,s,best};})
+   .filter(x=>x.s>0.05&&x.best).sort((a,b)=>b.s-a.s).slice(0,n);}
+const RLAB={2:"loved",1:"liked"};
+function renderMine(){const by=v=>G.filter(g=>ratings[g.name]===v);const loved=by(2),liked=by(1),nope=by(-1);
+  const fy=forYou(),fyEl=document.getElementById("foryou"),cnt=document.getElementById("fycount");
+  cnt.textContent=fy.length?`Gins you might like (${fy.length})`:"Gins you might like";
+  const nr=loved.length+liked.length+nope.length;document.getElementById("lcd").innerHTML=`${G.length} GINS LOADED · ${nr} RATED · ${fy.length?fy.length+" PICKS READY":"RATE TO UNLOCK PICKS"}<span>_</span>`;
+  fyEl.innerHTML=fy.length?`<ul class="simlist">${fy.map((x,i)=>`<li><button type="button" data-id="${x.g.id}"><strong>${i+1}. ${esc(x.g.name)}</strong><span class="pct">${x.g.price}</span><small>${x.g.style} · ${esc(x.g.country)}${x.g.tw?" · TW "+x.g.tw:""}. Close to ${esc(x.best.name)}, which you ${RLAB[ratings[x.best.name]]}. ${compare(x.best,x.g).replace("Both lean","Both lean")}</small></button></li>`).join("")}</ul>`
+    :`<p class="empty">Rate a few gins with "Loved it" or "Liked it". This list fills in and re-ranks every time you rate one. "Loved it" counts about twice as much as "Liked it", and "Not for me" pushes similar gins down.</p>`;
+  if(!loved.length&&!liked.length&&!nope.length){mine.innerHTML=`<p class="empty">Nothing rated yet.</p>`;return;}
+  const row=(t,list,c)=>list.length?`<b>${t} (${list.length})</b><div class="mine">${list.map(g=>`<button type="button" class="${c}" data-id="${g.id}">${esc(g.name)}</button>`).join("")}</div>`:"";
+  mine.innerHTML=row("Loved",loved,"love")+row("Liked",liked,"up")+row("Not for me",nope,"down");}
+
+// ---------- saving: account sync when available, this device otherwise ----------
+let dbRef=null,writing=Promise.resolve();
+function local(){try{const s=JSON.parse(localStorage.getItem("gin-state")||"{}");ratings=s.ratings||{};if(s.maxPrice)maxPrice=s.maxPrice;onlyTW=!!s.onlyTW;}catch(e){}}
+function save(){const body={ratings,maxPrice,onlyTW,skin:document.documentElement.dataset.skin,updated:Date.now()};
+  try{localStorage.setItem("gin-state",JSON.stringify(body))}catch(e){}
+}
+function connect(){sync.textContent="Saved in this browser.";}
+
+// ---------- start ----------
+local();drawChips();base();renderMine();
+const start=()=>{G.forEach(g=>{g.lw=textW(g.label)+.02*g.label.length;});fitAll();ro.observe(svg);
+  paint();};
+(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(start);
+connect();
+}
+</script>
+</body>
+</html>
